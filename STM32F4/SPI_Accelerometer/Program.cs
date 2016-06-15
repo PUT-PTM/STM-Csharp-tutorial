@@ -1,7 +1,7 @@
 using Microsoft.SPOT.Hardware;
 using System.Threading;
 
-namespace SPI_Gyroscope
+namespace SPI_Accelerometer
 {
     public class Program
     {
@@ -36,10 +36,10 @@ namespace SPI_Gyroscope
             WriteRegister(0x20, 0xC7);
             while (true)
             {
-                    led.Write(false);
-                    led0.Write(false);
-                    led1.Write(false);
-                    led2.Write(false);
+                led.Write(false);
+                led0.Write(false);
+                led1.Write(false);
+                led2.Write(false);
                 if ((ReadRegister(0x2D) > 150) && (ReadRegister(0x2D) < 230))
                 {
                     led.Write(true);
@@ -48,13 +48,13 @@ namespace SPI_Gyroscope
                     led2.Write(true);
                 }
                 if ((ReadRegister(0x29) > 160) && (ReadRegister(0x29) < 230))
-                    led2.Write(true); 
+                    led2.Write(true);
                 if ((ReadRegister(0x29) < 140) && (ReadRegister(0x29) > 20))
                     led0.Write(true);
                 if ((ReadRegister(0x2B) > 160) && (ReadRegister(0x2B) < 230))
                     led.Write(true);
                 if ((ReadRegister(0x2B) < 140) && (ReadRegister(0x2B) > 20))
-                     led1.Write(true);
+                    led1.Write(true);
                 Thread.Sleep(100);
             }
         }
