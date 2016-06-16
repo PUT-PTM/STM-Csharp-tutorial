@@ -6,16 +6,18 @@ namespace Button
     {
         public static void Main()
         {
-            InterruptPort button =
-                new InterruptPort((Cpu.Pin)0, false, Port.ResistorMode.PullDown, Port.InterruptMode.InterruptEdgeLevelHigh);
-             OutputPort led = new OutputPort((Cpu.Pin)63, false);
-             OutputPort led0 = new OutputPort((Cpu.Pin)62, false);
-             OutputPort led1 = new OutputPort((Cpu.Pin)61, false);
-             OutputPort led2 = new OutputPort((Cpu.Pin)60, false);
-            while (true)
+            InterruptPort button = 
+                new InterruptPort((Cpu.Pin)0, false, Port.ResistorMode.PullDown, Port.InterruptMode.InterruptEdgeLevelHigh);//Button Declaration. 
+            OutputPort led = new OutputPort((Cpu.Pin)63, false);    //Red led
+            OutputPort led0 = new OutputPort((Cpu.Pin)62, false);   //Blue led
+            OutputPort led1 = new OutputPort((Cpu.Pin)61, false);   //Green led
+            OutputPort led2 = new OutputPort((Cpu.Pin)60, false);   //Orange led
+
+            while (true)//control loop
             {
-                if (!button.Read() == true)
+                if (button.Read() == true) //if button click
                 {
+                    //Turn on red and blue led, turn off orange and green led
                     led.Write(true);
                     led0.Write(true);
                     led1.Write(false);
@@ -23,6 +25,7 @@ namespace Button
                 }
                 else
                 {
+                    //Turn on orange and green led, turn off red and blue led
                     led.Write(false);
                     led0.Write(false);
                     led1.Write(true);

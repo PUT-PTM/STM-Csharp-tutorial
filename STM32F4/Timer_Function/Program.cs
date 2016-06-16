@@ -6,39 +6,29 @@ namespace Timer_Function
 {
     public class Program
     {
-        public static int x;
+        public static bool LED_ON; //state of LED
         public static OutputPort led;
         public static OutputPort led0;
         public static OutputPort led1;
         public static OutputPort led2;
         public static void funTimer(object state)
         {
-            if (x == 1)
-            {
-                led.Write(true);
-                led0.Write(true);
-                led1.Write(true);
-                led2.Write(true);
-                x = 0;
-            }
-            else
-            {
-                led.Write(false);
-                led0.Write(false);
-                led1.Write(false);
-                led2.Write(false);
-                x = 1;
-            }
+                //Turn on or off all leds
+                led.Write(LED_ON);
+                led0.Write(LED_ON);
+                led1.Write(LED_ON);
+                led2.Write(LED_ON);
+                LED_ON = !LED_ON;
         }
         public static void Main()
         {
-            x = 1;
-            led = new OutputPort((Cpu.Pin)63, false);
-            led0 = new OutputPort((Cpu.Pin)62, false);
-            led1 = new OutputPort((Cpu.Pin)61, false);
-            led2 = new OutputPort((Cpu.Pin)60, false);
-            Timer timer = new System.Threading.Timer(funTimer, null, 0, 1000);
-            while (true) { }
+            LED_ON = true;
+            led = new OutputPort((Cpu.Pin)63, false);    //Red led
+            led0 = new OutputPort((Cpu.Pin)62, false);   //Blue led
+            led1 = new OutputPort((Cpu.Pin)61, false);   //Green led
+            led2 = new OutputPort((Cpu.Pin)60, false);   //Orange led
+            Timer timer = new System.Threading.Timer(funTimer, null, 0, 1000);//Set timer. Timer each second trigger "funTimer" function.
+            while (true) { }//Control loop
         }
     }
 }

@@ -6,25 +6,25 @@ namespace RTC
     {
         public static void Main()
         {
-            long x = 0;
-            int check = 0;
-            while (true)
+            long Ticks = 0; 
+            bool check = true;
+            while (true)//control loop
             {
                 if (DateTime.Now.Second% 2==0)
                 {
-                    if (check == 0)
+                    if (check == true)//Taking actual number of ticks.
                     {
-                        x = DateTime.Now.Ticks;
-                        Debug.Print("Ticks:" + x);
-                        check = 1;
+                        Ticks = DateTime.Now.Ticks;
+                        Debug.Print("Ticks:" + Ticks);
+                        check = false;
                     }
                 }
                 else
-                    if (check == 1)
+                    if (check == true)//Checking how many ticks are made in 1 second
                     {
-                        x = DateTime.Now.Ticks-x;
-                        Debug.Print("Ticks in 1 sec:" + x);
-                        check = 0;
+                        Ticks = DateTime.Now.Ticks - Ticks; 
+                        Debug.Print("Ticks in 1 sec:" + Ticks);
+                        check = false;
                     }
             }
         }
