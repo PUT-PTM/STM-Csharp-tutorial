@@ -1,0 +1,147 @@
+\documentclass{article} 
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{polski}
+\usepackage[utf8]{inputenc}
+\graphicspath{ {C:/image}}
+\title{.NET Micro Framework
+STM32F4 Discovery}
+\date{2016.4.21}
+\author{Wojciech Duda}
+\begin{document} 
+\maketitle 
+\pagenumbering{gobble} 
+\newpage
+\pagenumbering{arabic}
+\section{Teoria}
+Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pamięci jest to architektura harwardzka, tzn. pamięć zawierająca kod programu (Flash) i pamięć danych (SRAM) są rozdzielone i dostęp do nich odbywa się poprzez osobne magistrale.
+
+\includegraphics[width=\textwidth]{image/1.jpg}
+\section{Instalacja}
+\subsection{Narzędzia:}
+\begin{itemize}
+\item mikrokontroler STM32F4 Discovery
+\item kable USB Micro oraz USB Mini
+\item Visual studio
+\item \href{http://www.st.com/content/st_com/en/products/embedded-software/development-tool-software/stsw-link004.html}{STM32 ST-LINK Utility}
+\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471395}{sterwonik USB}
+\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex}
+\item \href {netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK}
+\end{itemize}
+\subsection{Zainstaluj STLINK, oraz SDK, resztę pilków rozpakuj.}
+\subsection{Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na zdjęciu powyżej.)}
+\subsection{Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”}
+
+\includegraphics[width=\textwidth]{image/2.jpg}
+\subsection{Następnie wybierz Target \textgreater Erase Chip oraz Target\textgreater Erase Sectors, wybierz wszystkie i potwierdź. Wybierz Target \textgreater Program…, wybierz ścieżkę Tinybooter.hex a następnie wybierz start. Zresetuj płytkę poprzez przycisk zerujący.}
+
+\includegraphics[width=\textwidth]{image/3.jpg}
+\subsection{Jeżeli wszystko przebiegło prawidłowo powinny zapalić się 3 diody użytkowe. Podłącz kabel micro USB (muszą być podłączone oba).}
+
+\includegraphics[width=\textwidth]{image/4.jpg}
+\subsection{Przejdz do “urządzenia i drukarki”. Tam w obszarze“ nieokreślone” kliknij prawym przyciskiem myszy w “STM .Net Test” i wybierz właściowości.}
+
+\includegraphics[width=\textwidth]{image/5.jpg}
+\subsection{Wejdź w sprzęt \textgreater właściowości \textgreater zmień ustawienia \textgreater sterownik \textgreater Aktualizuj sterownik…}
+
+\includegraphics[width=\textwidth]{image/6.jpg}
+\includegraphics[width=\textwidth]{image/7.jpg} 
+\subsection{Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowalłeś na początku sterownik. Podczas instalacji zignoruj ostrzeżenia.}
+
+\subsection{Teraz uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch lików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.}
+\includegraphics[width=\textwidth]{image/8.jpg}
+\subsection{Włącz Visual studio utworz nowy projekt i wybierz C\# \textgreater Micro Framework \textgreater Console Application.}
+
+\includegraphics[width=\textwidth]{image/9.jpg}
+\subsection{W utworzonym projecie, w Solution Explorer kliknij prawym przyciskiem myszy na projekt i wybierz “Properties”. Tam wybierz .NET Micro Framework i Transport ustaw na USB.}
+
+\includegraphics[width=\textwidth]{image/10.jpg}
+\section{Przykłady}
+Wszystkie przykłady wymienione poniżej są dostępne na:  \href{https://github.com/PUT-PTM/STM-Csharp-tutorial}{https://github.com/PUT-PTM/STM-Csharp-tutorial}. Każdy posiada dwie referencje: Microsoft.SPOT.Native oraz mscorlib, są one niezbędne do działania. Mscorlib zawiera zbiór przestrzeni nazw.
+
+\subsection{Przycisk}
+Obsługa przycisku oraz LED jest zaimplementowana w przykładzie "Button". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
+\begin{itemize}
+\item InterruptPort - wykorzystana jako obsługa przycisku.
+\item OutputPort - wykorzystana jako obsługa LED.
+\item Cpu - wykorzystana do inicjacji przycisku oraz LED, poprzez określenie ich pinów.
+\end{itemize}
+\subsection*{Działanie programu}
+Sprawdza stan przycisku,w przypadku wciśnięcia przycisku zapala niebieską oraz czerwoną diodę, w innym przpadku zapala pomarańczową oraz zieloną.
+
+\subsection*{Kluczowe funkcje}
+\begin{itemize}
+\item void Write(bool) - Metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
+\item bool Read() - Funkcja klasy InterruptPort, zwraca true jeżeli przycisk jest wciśnięty.
+\end{itemize}
+
+\subsection{LED}
+Obsługa LED zaimplementowana jest w przykładzie "LED\_GPIO". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
+\begin{itemize}
+\item OutputPort - wykorzystana jako obsługa LED.
+\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
+\end{itemize}
+\subsection*{Działanie programu}
+W nieskończonej pętli wykonnuje natępujące czynności: włączenie wszystkich LED, czekanie na wykonanie pętli for, wyłączenie wszystkich LED, czekanie na wykonanie pętli for.
+\subsection*{Kluczowe funkcje}
+\begin{itemize}
+\item void Write(bool) - metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
+\item for (int i = 0; i < 100000; i++) {} - prosta pętla służąca do zatrzymania programu.
+\end{itemize}
+\subsection{PWM}
+Obsługa PWM oraz usypaiania wątku zaimplementowana jest w przykładzie "LED\_PWM". Przykład posiada dwie dodatkowe referencje: Microsoft.SPOT.Hardware i Microsoft.SPOT.Hardware.PWM. Definiują one takie klasy jak:
+\begin{itemize}
+\item PWM - wykorzystana jako obsługa LED.
+\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
+\item Thread - Wykorzystywana do usypiania wątku. 
+\end{itemize}
+\subsection*{Działanie programu}
+W nieskończonej pętli, po kolei cykl pracy impulsów dla każdego LEDa ustawiany jest na liczbę 1, zmieniejszając go o 0,1 co sekundę, aż do 0.
+\subsection*{Kluczowe funkcje oraz zmienna}
+\begin{itemize}
+\item double DutyCycle() - zmienna klasy PWM. Określa cykla pracy impulsów jako ułamek. Liczba powinna być z przedziału od 0,0 do 1,0.
+\item void Sleep(int) - metoda klasy Thread. Usypia wątek na tyle milisekund ile zostało podanych w argumencie.
+\item void Start() - metoda klasyw PWM. Uruchamia port PWM na czas nieokreślony.
+\end{itemize}
+\subsection{Zegar czasu rzeczywistego}
+Obsługa zegaru czasu rzecziwistego oraz debuggera zaimplementowana jest w przykładzie "RTC".
+\subsection*{Działanie programu}
+W nieskończonej pętli spradzane są sekundy z aktualnego czasu. Raz na sekundę wykonuje pewne akcje. Jeżeli czas jest podzielny przez 2, pobiera aktualną liczbę tyknięc zegara, w następnej sekundzie sprawdza ile tyknięć wykonało się w czasie tej sekundy. 
+\subsection*{Kluczowa metoda oraz zmienne}
+\begin{itemize}
+\item void Debug.Print(string) - metoda wyświetlająca podany argument w Visual Studio podczas debugowania
+\item int DateTime.Now.Second - zmienna przechowująca sekundy z aktualnego czasu. Może przyjmować wartości od 0 do 59
+\item long DateTime.Now.Ticks - zmienna przechowująca a ilość tyknięć zegara, które reprezentują datę i godzinę tej instancji. Może przyjmować wartości od DateTime.MinValue.Ticks do DateTime.MaxValue.Ticks.
+\end{itemize}
+\subsection{SPI-Akcelerometr}
+Obsługa akcelerometru za pomocą SPI, LED oraz obsługa watków zaimplementowane są w przykładzie "SPI\_Accelerometer". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
+\begin{itemize}
+\item OutputPort - wykorzystana jako obsługa LED.
+\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
+\item Thread - Wykorzystywana do usypiania wątku.
+\item SPI - wykorzysytwana do konfiguracji akcelerometru oraz do obsługi czytania z akcelerometru i zapisywania do akcelerometru.
+\end{itemize}
+\subsection*{Działanie programu}
+Odczytywanie aktualnego ułożenia przestrzennego urządzenia, i na podstawie tych dannych włączenie odpowiednich LED. Przechylenie w dół któregoś boku skutkuje zapaleniem odpowiedniego LED. Odwrócenie urządzenia o $180^{\circ}$ spowoduje zapalenie wszystkich LED.
+\subsection*{Kluczowe funkcje}
+\begin{itemize}
+\item void Write(bool) - metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
+\item void Sleep(int) - metoda klasy Thread. Usypia wątek na tyle milisekund ile zostało podanych w argumencie.
+\item void WriteRegister(byte, byte) - metoda służy do zapisywania do akcelerometru. Pierwszy argument to adres rejestru, drugi to dane do zapisu. 
+\item byte ReadRegister(byte) - funkcja służy do czytania odczytywania z akcelerometru. Zwraca dane z rejestru o adresie podanym w argumencie. 
+\end{itemize}
+\subsection{Timer}
+Obsługa timera oraz LED zaimplementowana jest wprzykładzie "Timer\_Function". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
+\begin{itemize}
+\item OutputPort - wykorzystana jako obsługa LED
+\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
+\end{itemize}
+\subsection*{Działanie programu}
+Co sekundę timer się uruchamia i zmienia stan LED(włączone, wyłączone). Nieskończona pętla służy do tego aby program się nie zakończył.
+\subsection*{Kluczowe metody oraz klasa}
+\begin{itemize}
+\item void Write(bool) - metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
+\item void funTimer(object) - metoda wywoływana przez timer.
+\item class Timer - klasa definiująca timer. W konstruktor przyjmuje argumenty takie jak: metoda którą ma wywoływać, obiekt przechwoujący dane, opóźnienie z jakim ma być wywoływana metoda(w milisekundach), czas między wywoływaniami(w milisekundach). 
+\end{itemize}
+\end{document}
