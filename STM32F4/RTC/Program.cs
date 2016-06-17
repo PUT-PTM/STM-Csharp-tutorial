@@ -20,11 +20,11 @@ namespace RTC
                     }
                 }
                 else
-                    if (check == true)//Checking how many ticks are made in 1 second
+                    if (check == false)//Checking how many ticks are made in 1 second
                     {
                         Ticks = DateTime.Now.Ticks - Ticks; 
                         Debug.Print("Ticks in 1 sec:" + Ticks);
-                        check = false;
+                        check = true;
                     }
             }
         }
