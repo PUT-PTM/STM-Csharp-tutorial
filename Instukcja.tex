@@ -28,12 +28,12 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex}
 \item \href {netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK}
 \end{itemize}
-\subsection{Zainstaluj STLINK, oraz SDK, resztę pilków rozpakuj.}
+\subsection{Zainstaluj STLINK, oraz SDK, resztę plików rozpakuj.}
 \subsection{Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na zdjęciu powyżej.)}
 \subsection{Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”}
 
 \includegraphics[width=\textwidth]{image/2.jpg}
-\subsection{Następnie wybierz Target \textgreater Erase Chip oraz Target\textgreater Erase Sectors, wybierz wszystkie i potwierdź. Wybierz Target \textgreater Program…, wybierz ścieżkę Tinybooter.hex a następnie wybierz start. Zresetuj płytkę poprzez przycisk zerujący.}
+\subsection{Następnie wybierz Target \textgreater Erase Chip oraz Target\textgreater Erase Sectors, wybierz wszystkie i potwierdź. Wybierz Target \textgreater Program…, wybierz ścieżkę Tinybooter.hex a następnie wybierz start. Zresetuj mikrokontroler poprzez przycisk zerujący.}
 
 \includegraphics[width=\textwidth]{image/3.jpg}
 \subsection{Jeżeli wszystko przebiegło prawidłowo powinny zapalić się 3 diody użytkowe. Podłącz kabel micro USB (muszą być podłączone oba).}
@@ -46,35 +46,35 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 
 \includegraphics[width=\textwidth]{image/6.jpg}
 \includegraphics[width=\textwidth]{image/7.jpg} 
-\subsection{Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowalłeś na początku sterownik. Podczas instalacji zignoruj ostrzeżenia.}
+\subsection{Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowalłeś na początku sterownik. Podczas instalacji ignoruj ostrzeżenia.}
 
-\subsection{Teraz uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch lików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.}
+\subsection{Teraz uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch plików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.}
 \includegraphics[width=\textwidth]{image/8.jpg}
-\subsection{Włącz Visual studio utworz nowy projekt i wybierz C\# \textgreater Micro Framework \textgreater Console Application.}
+\subsection{Włącz Visual studio utwórz nowy projekt i wybierz C\# \textgreater Micro Framework \textgreater Console Application.}
 
 \includegraphics[width=\textwidth]{image/9.jpg}
-\subsection{W utworzonym projecie, w Solution Explorer kliknij prawym przyciskiem myszy na projekt i wybierz “Properties”. Tam wybierz .NET Micro Framework i Transport ustaw na USB.}
+\subsection{W utworzonym projekie, w Solution Explorer kliknij prawym przyciskiem myszy na projekt i wybierz “Properties”. Tam wybierz .NET Micro Framework i Transport ustaw na USB.}
 \includegraphics[width=\textwidth]{image/10.jpg}
 
 \section{Instrukcja użycia}
-Wszystkie przykłady wymienione poniżej są dostępne na:  \href{https://github.com/PUT-PTM/STM-Csharp-tutorial}{https://github.com/PUT-PTM/STM-Csharp-tutorial}. Każdy posiada dwie referencje: Microsoft.SPOT.Native oraz mscorlib, są one niezbędne do działania. Mscorlib zawiera zbiór przestrzeni nazw. Aby uruchomić konkretny przykład trzeba uruchomić solucję "STM32F4", w "Solution Explorer" kliknąć prawym przyciskiem myszy konkretny przykład i wybrać opcję "Set as StartUp Project". Niezbęde jest również podłączenie mikrokontrolera kablami USB Micro oraz USB Mini. Następnie wystarczy tylko rozpocząć debugowanie przyciskiem F5.
+Wszystkie przykłady wymienione poniżej są dostępne na:  \href{https://github.com/PUT-PTM/STM-Csharp-tutorial}{https://github.com/PUT-PTM/STM-Csharp-tutorial}. Każdy posiada dwie referencje: Microsoft.SPOT.Native oraz mscorlib, są one niezbędne do działania. Mscorlib zawiera zbiór przestrzeni nazw. Aby uruchomić konkretny przykład trzeba uruchomić solucję "STM32F4", w "Solution Explorer" kliknąć prawym przyciskiem myszy konkretny przykład i wybrać opcję "Set as StartUp Project". Niezbędne jest również podłączenie mikrokontrolera kablami USB Micro oraz USB Mini. Następnie wystarczy tylko rozpocząć debugowanie przyciskiem F5.
 
 \subsection{Przycisk}
-Obsługa przycisku oraz LED jest zaimplementowana w przykładzie "Button". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, wytępują one na pinach 60-63. Klasa InterruptPort obsługuje przycisk, jest on na pinie 0. W pętli sterującej while(true) sprawdzany jest stan przycisku za pomocą funkcji Read() klasy InterruptPort. Jeżeli zwróci true, czyli przycisk wciśnięty, włączy się czerwona i niebieska dioda, pozostałe zostaną wyłączone. W przypadku kiedy funkcja zwróci false- zielona i pomarańczowa dioda zostanie włączona, a pozsotałe zostaną wyłączone.
+Obsługa przycisku oraz LED jest zaimplementowana w przykładzie "Button". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, występują one na pinach 60-63. Klasa InterruptPort obsługuje przycisk, jest on na pinie 0. W pętli sterującej while(true) sprawdzany jest stan przycisku za pomocą funkcji Read() klasy InterruptPort. Jeżeli zwróci true, czyli przycisk wciśnięty, włączy się czerwona i niebieska dioda, pozostałe zostaną wyłączone. W przypadku kiedy funkcja zwraca false- zielona i pomarańczowa dioda zostanie włączona, a pozsotałe zostaną wyłączone.
 
 \subsection{LED}
-Obsługa diod LED zaimplementowana jest w przykładzie "LED\_GPIO". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, wytępują one na pinach 60-63. W pętli sterującej while(true) wszystkie diody są włączane, a potem wyłączane. Stan diod zmienia się za pomocą metody Write(bool) klasy OutputPort(true-włącz, false-wyłącz). Aby stan diod nie zmieniał się za szybko, dodane są proste pętle for(int i = 0; i < 100000; i++)\{\}.
+Obsługa diod LED zaimplementowana jest w przykładzie "LED\_GPIO". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, występują one na pinach 60-63. W pętli sterującej while(true) wszystkie diody są włączane, a potem wyłączane. Stan diod zmienia się za pomocą metody Write(bool) klasy OutputPort(true-włącz, false-wyłącz). Aby stan diod nie zmieniał się za szybko, dodane są proste pętle for(int i = 0; i < 100000; i++)\{\}.
 
 \subsection{PWM}
-Obsługa PWM oraz usypaiania wątku zaimplementowana jest w przykładzie "LED\_PWM". Przykład posiada dwie dodatkowe referencje: Microsoft.SPOT.Hardware i Microsoft.SPOT.Hardware.PWM. Klasa PWM obsługuje diody, występują ona na kanałach PWM od 0 do 3. W pętli sterującej while(true) diody są pokolei włączane i zmniejsza się ich moc świecenia za pomocą zmiennej DutyCycle klasy PWM. Diody są włączone z mocą 100\% i zmniejsza się ich moc o 10\% co sekundę aż do 0. Czekanie zaimplementowane jest przez usypianie wątku: Thread.Sleep(1000), liczba podana jako atrybut to czas podany w milisekundach.
+Obsługa PWM oraz usypaiania wątku zaimplementowana jest w przykładzie "LED\_PWM". Przykład posiada dwie dodatkowe referencje: Microsoft.SPOT.Hardware i Microsoft.SPOT.Hardware.PWM. Klasa PWM obsługuje diody, występują one na kanałach PWM od 0 do 3. W pętli sterującej while(true) diody są po kolei włączane i zmniejsza się ich moc świecenia za pomocą zmiennej DutyCycle klasy PWM. Diody są włączane z mocą 100\% i zmniejsza się ich moc o 10\% co sekundę aż do 0. Czekanie zaimplementowane jest przez uśpienie wątku: Thread.Sleep(1000), liczba podana jako atrybut to czas podany w milisekundach.
 
 \subsection{Zegar czasu rzeczywistego}
 Obsługa zegaru czasu rzecziwistego oraz debuggera zaimplementowana jest w przykładzie "RTC". W pętli sterującej while(true) sprawdzane są sekundy z aktualnego czasu (zmienna DateTime.Now.Second), co sekundę w debugerze wyświetlana jest wartość za pomocą metody Debug.Print(string), za argument przyjmuje to co ma wyświetlić w debugerze. W sekundach parzystych wyświetlana jest aktualna ilość przeskoków zegara, w nieparzystych sekundach wyświetlana jest ilość przeskoków zegara wykonanych w ciągu sekundy.
 
 \subsection{SPI-Akcelerometr}
-Obsługa akcelerometru za pomocą SPI, LED oraz obsługa watków zaimplementowane są w przykładzie "SPI\_Accelerometer". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa SPI obsługuje akceleromter, jest on na pinie 67. W przykładzie zaimplementowana jest motoda służąca do zapisywania do akcelerometru  void WriteRegister(byte register, byte data) i funkcja do odczytywania z akcelerometru byte ReadRegister(byte register). Argument register jest adresem rejestru, argument data to dane dla akcelerometru. W pętli sterującej while(true) sprawdzane są wartości akcelormoetru i na ich podstawie włącza się diody. Program włączy diody po tej stronie, w którą przechylony do dołu jest mikrokontroler. W przypadku odwrócenia górą do dołu mikrokontrolera, włączą się wzystkie diody. Na końcu pętli wątek usypiany jest na 100 milisekund aby zmniejszyć ilość niepoprawnych wyników. 
+Obsługa akcelerometru za pomocą SPI, LED oraz obsługa watków zaimplementowane są w przykładzie "SPI\_Accelerometer". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa SPI obsługuje akcelerometr, jest on na pinie 67. W przykładzie zaimplementowana jest moteda służąca do zapisywania do akcelerometru  void WriteRegister(byte register, byte data) i funkcja do odczytywania z akcelerometru byte ReadRegister(byte register). Argument register jest adresem rejestru, argument data to dane dla akcelerometru. W pętli sterującej while(true) sprawdzane są wartości akcelerometru i na ich podstawie włącza się diody. Program włącza diody po tej stronie, w którą pochylony do dołu jest mikrokontroler. W przypadku odwrócenia górą do dołu mikrokontrolera, włączą się wszystkie diody. Na końcu pętli wątek usypiany jest na 100 milisekund aby zmniejszyć ilość niepoprawnych wyników. 
 
 \subsection{Timer}
-Obsługa timera oraz LED zaimplementowana jest wprzykładzie "Timer\_Function". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa Timer obsługuje timer, w konstruktorze przyjmuje argumenty jak :funkcja, którą ma wywoływać co tyle milisekund ile jest podanych w ostatnim argumencie. Przed ostanti argument konstruktora to opóźnienie z jakim ma być wykonana funkcja. Pętla sterująca whilte(true) {} istnieje aby program się nie zakończył. Program co sekundę w funkcji wywoływanej przez timer, zmienia stan diod(włączone, wyłączone).
+Obsługa timera oraz LED zaimplementowana jest w przykładzie "Timer\_Function". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa Timer obsługuje timer, w konstruktorze przyjmuje argumenty jak: funkcja, którą ma wywoływać co tyle milisekund ile jest podanych w ostatnim argumencie. Przedostatni argument konstruktora to opóźnienie z jakim ma być wykonana funkcja. Pętla sterująca whilte(true) {} istnieje aby program się nie zakończył. Program co sekundę w funkcji wywoływanej przez timer, zmienia stan diod(włączone, wyłączone).
 
 \end{document}
