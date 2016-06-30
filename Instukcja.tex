@@ -1,4 +1,4 @@
-\documentclass{article} 
+﻿\documentclass{article} 
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{polski}
@@ -54,94 +54,27 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 
 \includegraphics[width=\textwidth]{image/9.jpg}
 \subsection{W utworzonym projecie, w Solution Explorer kliknij prawym przyciskiem myszy na projekt i wybierz “Properties”. Tam wybierz .NET Micro Framework i Transport ustaw na USB.}
-
 \includegraphics[width=\textwidth]{image/10.jpg}
-\section{Przykłady}
-Wszystkie przykłady wymienione poniżej są dostępne na:  \href{https://github.com/PUT-PTM/STM-Csharp-tutorial}{https://github.com/PUT-PTM/STM-Csharp-tutorial}. Każdy posiada dwie referencje: Microsoft.SPOT.Native oraz mscorlib, są one niezbędne do działania. Mscorlib zawiera zbiór przestrzeni nazw.
+
+\section{Instrukcja użycia}
+Wszystkie przykłady wymienione poniżej są dostępne na:  \href{https://github.com/PUT-PTM/STM-Csharp-tutorial}{https://github.com/PUT-PTM/STM-Csharp-tutorial}. Każdy posiada dwie referencje: Microsoft.SPOT.Native oraz mscorlib, są one niezbędne do działania. Mscorlib zawiera zbiór przestrzeni nazw. Aby uruchomić konkretny przykład trzeba uruchomić solucję "STM32F4", w "Solution Explorer" kliknąć prawym przyciskiem myszy konkretny przykład i wybrać opcję "Set as StartUp Project". Niezbęde jest również podłączenie mikrokontrolera kablami USB Micro oraz USB Mini. Następnie wystarczy tylko rozpocząć debugowanie przyciskiem F5.
 
 \subsection{Przycisk}
-Obsługa przycisku oraz LED jest zaimplementowana w przykładzie "Button". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
-\begin{itemize}
-\item InterruptPort - wykorzystana jako obsługa przycisku.
-\item OutputPort - wykorzystana jako obsługa LED.
-\item Cpu - wykorzystana do inicjacji przycisku oraz LED, poprzez określenie ich pinów.
-\end{itemize}
-\subsection*{Działanie programu}
-Sprawdza stan przycisku,w przypadku wciśnięcia przycisku zapala niebieską oraz czerwoną diodę, w innym przpadku zapala pomarańczową oraz zieloną.
-
-\subsection*{Kluczowe funkcje}
-\begin{itemize}
-\item void Write(bool) - Metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
-\item bool Read() - Funkcja klasy InterruptPort, zwraca true jeżeli przycisk jest wciśnięty.
-\end{itemize}
+Obsługa przycisku oraz LED jest zaimplementowana w przykładzie "Button". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, wytępują one na pinach 60-63. Klasa InterruptPort obsługuje przycisk, jest on na pinie 0. W pętli sterującej while(true) sprawdzany jest stan przycisku za pomocą funkcji Read() klasy InterruptPort. Jeżeli zwróci true, czyli przycisk wciśnięty, włączy się czerwona i niebieska dioda, pozostałe zostaną wyłączone. W przypadku kiedy funkcja zwróci false- zielona i pomarańczowa dioda zostanie włączona, a pozsotałe zostaną wyłączone.
 
 \subsection{LED}
-Obsługa LED zaimplementowana jest w przykładzie "LED\_GPIO". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
-\begin{itemize}
-\item OutputPort - wykorzystana jako obsługa LED.
-\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
-\end{itemize}
-\subsection*{Działanie programu}
-W nieskończonej pętli wykonnuje natępujące czynności: włączenie wszystkich LED, czekanie na wykonanie pętli for, wyłączenie wszystkich LED, czekanie na wykonanie pętli for.
-\subsection*{Kluczowe funkcje}
-\begin{itemize}
-\item void Write(bool) - metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
-\item for (int i = 0; i < 100000; i++) {} - prosta pętla służąca do zatrzymania programu.
-\end{itemize}
+Obsługa diod LED zaimplementowana jest w przykładzie "LED\_GPIO". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, wytępują one na pinach 60-63. W pętli sterującej while(true) wszystkie diody są włączane, a potem wyłączane. Stan diod zmienia się za pomocą metody Write(bool) klasy OutputPort(true-włącz, false-wyłącz). Aby stan diod nie zmieniał się za szybko, dodane są proste pętle for(int i = 0; i < 100000; i++)\{\}.
+
 \subsection{PWM}
-Obsługa PWM oraz usypaiania wątku zaimplementowana jest w przykładzie "LED\_PWM". Przykład posiada dwie dodatkowe referencje: Microsoft.SPOT.Hardware i Microsoft.SPOT.Hardware.PWM. Definiują one takie klasy jak:
-\begin{itemize}
-\item PWM - wykorzystana jako obsługa LED.
-\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
-\item Thread - Wykorzystywana do usypiania wątku. 
-\end{itemize}
-\subsection*{Działanie programu}
-W nieskończonej pętli, po kolei cykl pracy impulsów dla każdego LEDa ustawiany jest na liczbę 1, zmieniejszając go o 0,1 co sekundę, aż do 0.
-\subsection*{Kluczowe funkcje oraz zmienna}
-\begin{itemize}
-\item double DutyCycle() - zmienna klasy PWM. Określa cykla pracy impulsów jako ułamek. Liczba powinna być z przedziału od 0,0 do 1,0.
-\item void Sleep(int) - metoda klasy Thread. Usypia wątek na tyle milisekund ile zostało podanych w argumencie.
-\item void Start() - metoda klasyw PWM. Uruchamia port PWM na czas nieokreślony.
-\end{itemize}
+Obsługa PWM oraz usypaiania wątku zaimplementowana jest w przykładzie "LED\_PWM". Przykład posiada dwie dodatkowe referencje: Microsoft.SPOT.Hardware i Microsoft.SPOT.Hardware.PWM. Klasa PWM obsługuje diody, występują ona na kanałach PWM od 0 do 3. W pętli sterującej while(true) diody są pokolei włączane i zmniejsza się ich moc świecenia za pomocą zmiennej DutyCycle klasy PWM. Diody są włączone z mocą 100\% i zmniejsza się ich moc o 10\% co sekundę aż do 0. Czekanie zaimplementowane jest przez usypianie wątku: Thread.Sleep(1000), liczba podana jako atrybut to czas podany w milisekundach.
+
 \subsection{Zegar czasu rzeczywistego}
-Obsługa zegaru czasu rzecziwistego oraz debuggera zaimplementowana jest w przykładzie "RTC".
-\subsection*{Działanie programu}
-W nieskończonej pętli spradzane są sekundy z aktualnego czasu. Raz na sekundę wykonuje pewne akcje. Jeżeli czas jest podzielny przez 2, pobiera aktualną liczbę tyknięc zegara, w następnej sekundzie sprawdza ile tyknięć wykonało się w czasie tej sekundy. 
-\subsection*{Kluczowa metoda oraz zmienne}
-\begin{itemize}
-\item void Debug.Print(string) - metoda wyświetlająca podany argument w Visual Studio podczas debugowania
-\item int DateTime.Now.Second - zmienna przechowująca sekundy z aktualnego czasu. Może przyjmować wartości od 0 do 59
-\item long DateTime.Now.Ticks - zmienna przechowująca a ilość tyknięć zegara, które reprezentują datę i godzinę tej instancji. Może przyjmować wartości od DateTime.MinValue.Ticks do DateTime.MaxValue.Ticks.
-\end{itemize}
+Obsługa zegaru czasu rzecziwistego oraz debuggera zaimplementowana jest w przykładzie "RTC". W pętli sterującej while(true) sprawdzane są sekundy z aktualnego czasu (zmienna DateTime.Now.Second), co sekundę w debugerze wyświetlana jest wartość za pomocą metody Debug.Print(string), za argument przyjmuje to co ma wyświetlić w debugerze. W sekundach parzystych wyświetlana jest aktualna ilość przeskoków zegara, w nieparzystych sekundach wyświetlana jest ilość przeskoków zegara wykonanych w ciągu sekundy.
+
 \subsection{SPI-Akcelerometr}
-Obsługa akcelerometru za pomocą SPI, LED oraz obsługa watków zaimplementowane są w przykładzie "SPI\_Accelerometer". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
-\begin{itemize}
-\item OutputPort - wykorzystana jako obsługa LED.
-\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
-\item Thread - Wykorzystywana do usypiania wątku.
-\item SPI - wykorzysytwana do konfiguracji akcelerometru oraz do obsługi czytania z akcelerometru i zapisywania do akcelerometru.
-\end{itemize}
-\subsection*{Działanie programu}
-Odczytywanie aktualnego ułożenia przestrzennego urządzenia, i na podstawie tych dannych włączenie odpowiednich LED. Przechylenie w dół któregoś boku skutkuje zapaleniem odpowiedniego LED. Odwrócenie urządzenia o $180^{\circ}$ spowoduje zapalenie wszystkich LED.
-\subsection*{Kluczowe funkcje}
-\begin{itemize}
-\item void Write(bool) - metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
-\item void Sleep(int) - metoda klasy Thread. Usypia wątek na tyle milisekund ile zostało podanych w argumencie.
-\item void WriteRegister(byte, byte) - metoda służy do zapisywania do akcelerometru. Pierwszy argument to adres rejestru, drugi to dane do zapisu. 
-\item byte ReadRegister(byte) - funkcja służy do czytania odczytywania z akcelerometru. Zwraca dane z rejestru o adresie podanym w argumencie. 
-\end{itemize}
+Obsługa akcelerometru za pomocą SPI, LED oraz obsługa watków zaimplementowane są w przykładzie "SPI\_Accelerometer". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa SPI obsługuje akceleromter, jest on na pinie 67. W przykładzie zaimplementowana jest motoda służąca do zapisywania do akcelerometru  void WriteRegister(byte register, byte data) i funkcja do odczytywania z akcelerometru byte ReadRegister(byte register). Argument register jest adresem rejestru, argument data to dane dla akcelerometru. W pętli sterującej while(true) sprawdzane są wartości akcelormoetru i na ich podstawie włącza się diody. Program włączy diody po tej stronie, w którą przechylony do dołu jest mikrokontroler. W przypadku odwrócenia górą do dołu mikrokontrolera, włączą się wzystkie diody. Na końcu pętli wątek usypiany jest na 100 milisekund aby zmniejszyć ilość niepoprawnych wyników. 
+
 \subsection{Timer}
-Obsługa timera oraz LED zaimplementowana jest wprzykładzie "Timer\_Function". Posiada on dodatkową referencję Microsoft.SPOT.Hardware, która definiuje klasy takie jak:
-\begin{itemize}
-\item OutputPort - wykorzystana jako obsługa LED
-\item Cpu - wykorzystana do inicjacji LED, poprzez określenie ich pinów.
-\end{itemize}
-\subsection*{Działanie programu}
-Co sekundę timer się uruchamia i zmienia stan LED(włączone, wyłączone). Nieskończona pętla służy do tego aby program się nie zakończył.
-\subsection*{Kluczowe metody oraz klasa}
-\begin{itemize}
-\item void Write(bool) - metoda klasy OutputPort(true-włącz LED, false-wyłącz LED)
-\item void funTimer(object) - metoda wywoływana przez timer.
-\item class Timer - klasa definiująca timer. W konstruktor przyjmuje argumenty takie jak: metoda którą ma wywoływać, obiekt przechwoujący dane, opóźnienie z jakim ma być wywoływana metoda(w milisekundach), czas między wywoływaniami(w milisekundach). 
-\end{itemize}
+Obsługa timera oraz LED zaimplementowana jest wprzykładzie "Timer\_Function". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa Timer obsługuje timer, w konstruktorze przyjmuje argumenty jak :funkcja, którą ma wywoływać co tyle milisekund ile jest podanych w ostatnim argumencie. Przed ostanti argument konstruktora to opóźnienie z jakim ma być wykonana funkcja. Pętla sterująca whilte(true) {} istnieje aby program się nie zakończył. Program co sekundę w funkcji wywoływanej przez timer, zmienia stan diod(włączone, wyłączone).
+
 \end{document}
