@@ -23,10 +23,11 @@ namespace Timer_Function
         public static void Main()
         {
             LED_ON = true;
-            led = new OutputPort((Cpu.Pin)63, false);    //Red led
-            led0 = new OutputPort((Cpu.Pin)62, false);   //Blue led
-            led1 = new OutputPort((Cpu.Pin)61, false);   //Green led
-            led2 = new OutputPort((Cpu.Pin)60, false);   //Orange led
+            led = new OutputPort((Cpu.Pin)63, false);    //Blue led
+            led0 = new OutputPort((Cpu.Pin)62, false);   //Red led
+            led1 = new OutputPort((Cpu.Pin)61, false);   //Orange led
+            led2 = new OutputPort((Cpu.Pin)60, false);   //Green led
+
             Timer timer = new System.Threading.Timer(funTimer, null, 0, 1000);//Set timer. Timer each second trigger "funTimer" function.
             while (true) { }//Control loop
         }

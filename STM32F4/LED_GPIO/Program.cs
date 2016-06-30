@@ -5,10 +5,10 @@ namespace LED_GPIO
     {
         public static void Main()
         {
-            OutputPort led = new OutputPort((Cpu.Pin)63, false);    //Red led
-            OutputPort led0 = new OutputPort((Cpu.Pin)62, false);   //Blue led
-            OutputPort led1 = new OutputPort((Cpu.Pin)61, false);   //Green led
-            OutputPort led2 = new OutputPort((Cpu.Pin)60, false);   //Orange led
+            OutputPort led = new OutputPort((Cpu.Pin)63, false);    //Blue led
+            OutputPort led0 = new OutputPort((Cpu.Pin)62, false);   //Red led
+            OutputPort led1 = new OutputPort((Cpu.Pin)61, false);   //Orange led
+            OutputPort led2 = new OutputPort((Cpu.Pin)60, false);   //Green led
 
             while (true)//Control loop
             {
