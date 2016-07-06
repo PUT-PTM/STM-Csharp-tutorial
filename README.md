@@ -7,7 +7,7 @@ Overview - This project is a tutorial how to configure visual studio to programi
 Tools, How to run - In instruction.
 
 Attributions - https://msdn.microsoft.com/en-us/library/ff361664(v=vs.110).aspx
-singularengineer.com/stm32f4-discovery-board-running-net-microframework/
+www.singularengineer.com/stm32f4-discovery-board-running-net-microframework/
 
 License - GNU GPL v3
 

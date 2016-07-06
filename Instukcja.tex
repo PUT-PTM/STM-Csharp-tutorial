@@ -1,5 +1,6 @@
-﻿\documentclass{article} 
+\documentclass{article} 
 \usepackage{graphicx}
+\usepackage{here}
 \usepackage{hyperref}
 \usepackage{polski}
 \usepackage[utf8]{inputenc}
@@ -13,10 +14,15 @@ STM32F4 Discovery}
 \pagenumbering{gobble} 
 \newpage
 \pagenumbering{arabic}
+\tableofcontents
+\newpage
 \section{Teoria}
 Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pamięci jest to architektura harwardzka, tzn. pamięć zawierająca kod programu (Flash) i pamięć danych (SRAM) są rozdzielone i dostęp do nich odbywa się poprzez osobne magistrale.
 
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/1.jpg}
+\caption{Opis urządzenia}
+\end{figure}
 \section{Instalacja}
 \subsection{Narzędzia:}
 \begin{itemize}
@@ -28,36 +34,72 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex}
 \item \href {netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK}
 \end{itemize}
-\subsection{Zainstaluj STLINK, oraz SDK, resztę plików rozpakuj.}
-\subsection{Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na zdjęciu powyżej.)}
-\subsection{Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”}
+\subsection{Konfiguracja}
+\begin{enumerate}
+\item Zainstaluj STLINK, oraz SDK, resztę plików rozpakuj.
+\item Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na zdjęciu powyżej.)
+\item Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”
 
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/2.jpg}
-\subsection{Następnie wybierz Target \textgreater Erase Chip oraz Target\textgreater Erase Sectors, wybierz wszystkie i potwierdź. Wybierz Target \textgreater Program…, wybierz ścieżkę Tinybooter.hex a następnie wybierz start. Zresetuj mikrokontroler poprzez przycisk zerujący.}
+\caption{STLINK Utility}
+\end{figure}
 
+\item Następnie wybierz Target \textgreater Erase Chip oraz Target\textgreater Erase Sectors, wybierz wszystkie i potwierdź. Wybierz Target \textgreater Program…, wybierz ścieżkę Tinybooter.hex a następnie wybierz start. Zresetuj mikrokontroler poprzez przycisk zerujący.
+
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/3.jpg}
-\subsection{Jeżeli wszystko przebiegło prawidłowo powinny zapalić się 3 diody użytkowe. Podłącz kabel micro USB (muszą być podłączone oba).}
+\caption{Programowanie debuggera}
+\end{figure}
 
+\item Jeżeli wszystko przebiegło prawidłowo powinny zapalić się 3 diody użytkowe. Podłącz kabel micro USB (jak na rysunku 4).
+
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/4.jpg}
-\subsection{Przejdz do “urządzenia i drukarki”. Tam w obszarze“ nieokreślone” kliknij prawym przyciskiem myszy w “STM .Net Test” i wybierz właściowości.}
+\caption{Podłączony STM32F4 kablami mikro i mini USB}
+\end{figure}
 
+\item Przejdz do “urządzenia i drukarki”. Tam w obszarze“ nieokreślone” kliknij prawym przyciskiem myszy w “STM .Net Test” i wybierz właściowości.
+
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/5.jpg}
-\subsection{Wejdź w sprzęt \textgreater właściowości \textgreater zmień ustawienia \textgreater sterownik \textgreater Aktualizuj sterownik…}
+\caption{Urządzenia i drukarki}
+\end{figure}
 
+\item Wejdź w sprzęt \textgreater właściowości \textgreater zmień ustawienia \textgreater sterownik \textgreater Aktualizuj sterownik…
+
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/6.jpg}
-\includegraphics[width=\textwidth]{image/7.jpg} 
-\subsection{Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowalłeś na początku sterownik. Podczas instalacji ignoruj ostrzeżenia.}
+\caption{Instalacja sterownika krok 1}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/7.jpg}
+\caption{Instalacja sterownika krok 2}
+\end{figure}
 
-\subsection{Teraz uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch plików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.}
+\item Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowalłeś na początku sterownik. Podczas instalacji ignoruj ostrzeżenia.
+\item Uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch plików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.
+
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/8.jpg}
-\subsection{Włącz Visual studio utwórz nowy projekt i wybierz C\# \textgreater Micro Framework \textgreater Console Application.}
+\caption{MF Deploy}
+\end{figure}
+\item Włącz Visual studio utwórz nowy projekt i wybierz C\# \textgreater Micro Framework \textgreater Console Application.
 
+\begin{figure}[H]
 \includegraphics[width=\textwidth]{image/9.jpg}
-\subsection{W utworzonym projekie, w Solution Explorer kliknij prawym przyciskiem myszy na projekt i wybierz “Properties”. Tam wybierz .NET Micro Framework i Transport ustaw na USB.}
-\includegraphics[width=\textwidth]{image/10.jpg}
+\caption{Tworzenie projektu}
+\end{figure}
+\item W utworzonym projekie, w Solution Explorer kliknij prawym przyciskiem myszy na projekt i wybierz “Properties”. Tam wybierz .NET Micro Framework i Transport ustaw na USB.
 
-\section{Instrukcja użycia}
-Wszystkie przykłady wymienione poniżej są dostępne na:  \href{https://github.com/PUT-PTM/STM-Csharp-tutorial}{https://github.com/PUT-PTM/STM-Csharp-tutorial}. Każdy posiada dwie referencje: Microsoft.SPOT.Native oraz mscorlib, są one niezbędne do działania. Mscorlib zawiera zbiór przestrzeni nazw. Aby uruchomić konkretny przykład trzeba uruchomić solucję "STM32F4", w "Solution Explorer" kliknąć prawym przyciskiem myszy konkretny przykład i wybrać opcję "Set as StartUp Project". Niezbędne jest również podłączenie mikrokontrolera kablami USB Micro oraz USB Mini. Następnie wystarczy tylko rozpocząć debugowanie przyciskiem F5.
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/10.jpg}
+\caption{Konfigurowanie Visual Studio}
+\end{figure}
+\end{enumerate}
+
+\section{Opis przykładów}
+Przykłady są na stronie: \href{https://github.com/PUT-PTM/STM-Csharp-tutorial}{https://github.com/PUT-PTM/STM-Csharp-tutorial}. Każdy posiada dwie referencje: Microsoft.SPOT.Native oraz mscorlib, są one niezbędne do działania. Mscorlib zawiera zbiór przestrzeni nazw. Aby uruchomić konkretny przykład trzeba uruchomić solucję "STM32F4", w "Solution Explorer" kliknąć prawym przyciskiem myszy konkretny przykład i wybrać opcję "Set as StartUp Project". Niezbędne jest również podłączenie mikrokontrolera kablami USB Micro oraz USB Mini. Następnie wystarczy tylko rozpocząć debugowanie przyciskiem F5.
 
 \subsection{Przycisk}
 Obsługa przycisku oraz LED jest zaimplementowana w przykładzie "Button". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, występują one na pinach 60-63. Klasa InterruptPort obsługuje przycisk, jest on na pinie 0. W pętli sterującej while(true) sprawdzany jest stan przycisku za pomocą funkcji Read() klasy InterruptPort. Jeżeli zwróci true, czyli przycisk wciśnięty, włączy się czerwona i niebieska dioda, pozostałe zostaną wyłączone. W przypadku kiedy funkcja zwraca false- zielona i pomarańczowa dioda zostanie włączona, a pozsotałe zostaną wyłączone.
@@ -66,7 +108,7 @@ Obsługa przycisku oraz LED jest zaimplementowana w przykładzie "Button". Posia
 Obsługa diod LED zaimplementowana jest w przykładzie "LED\_GPIO". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa OutputPort obsługuje diody, występują one na pinach 60-63. W pętli sterującej while(true) wszystkie diody są włączane, a potem wyłączane. Stan diod zmienia się za pomocą metody Write(bool) klasy OutputPort(true-włącz, false-wyłącz). Aby stan diod nie zmieniał się za szybko, dodane są proste pętle for(int i = 0; i < 100000; i++)\{\}.
 
 \subsection{PWM}
-Obsługa PWM oraz usypaiania wątku zaimplementowana jest w przykładzie "LED\_PWM". Przykład posiada dwie dodatkowe referencje: Microsoft.SPOT.Hardware i Microsoft.SPOT.Hardware.PWM. Klasa PWM obsługuje diody, występują one na kanałach PWM od 0 do 3. W pętli sterującej while(true) diody są po kolei włączane i zmniejsza się ich moc świecenia za pomocą zmiennej DutyCycle klasy PWM. Diody są włączane z mocą 100\% i zmniejsza się ich moc o 10\% co sekundę aż do 0. Czekanie zaimplementowane jest przez uśpienie wątku: Thread.Sleep(1000), liczba podana jako atrybut to czas podany w milisekundach.
+Obsługa PWM oraz usypaiania wątku zaimplementowana jest w przykładzie "LED\_PWM". Posiada dwie dodatkowe referencje: Microsoft.SPOT.Hardware i Microsoft.SPOT.Hardware.PWM. Klasa PWM obsługuje diody, występują one na kanałach PWM od 0 do 3. W pętli sterującej while(true) diody są po kolei włączane i zmniejsza się ich moc świecenia za pomocą zmiennej DutyCycle klasy PWM. Diody są włączane z mocą 100\% i zmniejsza się ich moc o 10\% co sekundę aż do 0. Czekanie zaimplementowane jest przez uśpienie wątku: Thread.Sleep(1000), liczba podana jako atrybut to czas podany w milisekundach.
 
 \subsection{Zegar czasu rzeczywistego}
 Obsługa zegaru czasu rzecziwistego oraz debuggera zaimplementowana jest w przykładzie "RTC". W pętli sterującej while(true) sprawdzane są sekundy z aktualnego czasu (zmienna DateTime.Now.Second), co sekundę w debugerze wyświetlana jest wartość za pomocą metody Debug.Print(string), za argument przyjmuje to co ma wyświetlić w debugerze. W sekundach parzystych wyświetlana jest aktualna ilość przeskoków zegara, w nieparzystych sekundach wyświetlana jest ilość przeskoków zegara wykonanych w ciągu sekundy.
@@ -75,6 +117,147 @@ Obsługa zegaru czasu rzecziwistego oraz debuggera zaimplementowana jest w przyk
 Obsługa akcelerometru za pomocą SPI, LED oraz obsługa watków zaimplementowane są w przykładzie "SPI\_Accelerometer". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa SPI obsługuje akcelerometr, jest on na pinie 67. W przykładzie zaimplementowana jest moteda służąca do zapisywania do akcelerometru  void WriteRegister(byte register, byte data) i funkcja do odczytywania z akcelerometru byte ReadRegister(byte register). Argument register jest adresem rejestru, argument data to dane dla akcelerometru. W pętli sterującej while(true) sprawdzane są wartości akcelerometru i na ich podstawie włącza się diody. Program włącza diody po tej stronie, w którą pochylony do dołu jest mikrokontroler. W przypadku odwrócenia górą do dołu mikrokontrolera, włączą się wszystkie diody. Na końcu pętli wątek usypiany jest na 100 milisekund aby zmniejszyć ilość niepoprawnych wyników. 
 
 \subsection{Timer}
-Obsługa timera oraz LED zaimplementowana jest w przykładzie "Timer\_Function". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa Timer obsługuje timer, w konstruktorze przyjmuje argumenty jak: funkcja, którą ma wywoływać co tyle milisekund ile jest podanych w ostatnim argumencie. Przedostatni argument konstruktora to opóźnienie z jakim ma być wykonana funkcja. Pętla sterująca whilte(true) {} istnieje aby program się nie zakończył. Program co sekundę w funkcji wywoływanej przez timer, zmienia stan diod(włączone, wyłączone).
+Obsługa timera zaimplementowana jest w przykładzie "Timer\_Function". Posiada on dodatkową referencję Microsoft.SPOT.Hardware. Klasa Timer obsługuje timer, w konstruktorze przyjmuje argumenty jak: funkcja, którą ma wywoływać co tyle milisekund ile jest podanych w ostatnim argumencie. Przedostatni argument konstruktora to opóźnienie z jakim ma być wykonana funkcja. Pętla sterująca whilte(true) {} istnieje aby program się nie zakończył. Program co sekundę w funkcji wywoływanej przez timer, zmienia stan diod(włączone, wyłączone).
 
+\section{Opis implementacji}
+\subsection{Klasa OutputPort}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+ OutputPort (Pin portId,bool initialState)
+\begin{itemize}
+\item portId - identyfikator portu.
+\item initialState - stan początkowy na porcie po aktywacji.
+\end{itemize}
+\subsubsection{Funkcje}
+void Write(bool state) - wpisuje wartość do portu.
+\begin{itemize}
+\item state - wartość wpisywana do portu.
+\end{itemize}
+
+\newpage
+\subsection{Klasa InterruptPort}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+ InterruptPort (Pin portId, bool glitchFilter, ResistorMode resistor,\newline InterruptMode interrupt)
+\begin{itemize}
+\item portId - identyfikator portu.
+\item glitchFilter, - obsługa filtra błędów: true -włączony, false-wyłączony
+\item resistor - tryb rezystora, który określa stan domyślny dla portu.
+\item interrupt - tryb przerwania, który określa warunki wymagane do\newline generowania przerwania.
+\end{itemize}
+\subsubsection{Funkcje}
+bool Read () - zwraca aktualną wartość portu.
+
+\subsection{Klasa Cpu}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Atrybuty}
+\begin{itemize}
+\item enum Cpu.Pin - identyfikuje porty werjścia/wyjścia.
+\item enum Cpu.PWMChannel.PWM\_X - identyfikuje kanał PWM o numerze X.
+\end{itemize}
+
+\newpage
+\subsection{Klasa PWM}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware.PWM
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+PWM (PWMChannel channel, UInt32 period\_us, UInt32 duration\_us,  bool invert)
+\begin{itemize}
+\item channel - kanał PWM
+\item period\_us - okres pulsowania w mikrosekundach.
+\item duration\_us - czas pulsu w microsekundach.
+\item invert - Wartość, która wskazuje, czy wyjście jest odwrócone.
+\end{itemize}
+\subsubsection{Atrybuty}
+double DutyCycle - Pobiera lub ustawia cykl pracy impulsu jako wartość od 0.0 do 1.0.
+\subsubsection{Funkcje}
+void Start () - Uruchamia port PWM na nieokreślony czas.
+
+\newpage
+\subsection{Klasa SPI}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+SPI (Config)
+\begin{itemize}
+\item Config - Konfiguracja interfejsu SPI
+\end{itemize}
+\subsubsection{Funkcje}
+-void Write (byte[] writeBuffer) - wpisuje block danych do interfejsu.
+\begin{itemize}
+\item writeBuffer - buffor który zostanie zapisany do interfejsu.
+\end{itemize}
+-void WriteRead ( byte[] writeBuffer,ref byte[] readBuffer)
+\begin{itemize}
+\item writeBuffer - buffor który zostanie zapisany do interfejsu.
+\item readBuffer - buffor do którego zostaną zapisane dane odczytane z \newline interfejsu.
+\end{itemize}
+
+\newpage
+\subsection{Klasa SPI.Configuration}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+SPI.Configuration (Pin ChipSelect\_Port,bool ChipSelect\_ActiveState,\newline UInt16 ChipSelect\_SetupTime, UInt16 ChipSelect\_HoldTime,  bool Clock\_IdleState, bool Clock\_Edge, UInt16 Clock\_Rate, SPI\_module SPI\_mod)
+\begin{itemize}
+\item ChipSelect\_Port - Port wybranego czipu.
+\item ChipSelect\_ActiveState - Stan aktywny dla portu wybranego czipu. Jeżeli prawda port będzie ustawiany na wysoki w momencie dostępu do czipu, jezeli fałsz port będzie ustawiany na niski w momencie dostępu do czipu.
+\item ChipSelect\_SetupTime - Czas pomiędzy wybraniem urządzenia a momentem kiedy zegar rozpocznie transakcje. 
+\item ChipSelect\_HoldTime - Określa jak długo port czipu musi zostać w stanie aktywnym po zakończeniu transakcji czytania lub pisania.
+\item Clock\_IdleState - Stan bezczynności zegara. Jeśli prawda, sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku. Jeśli fałsz, sygnał zegara SPI zostanie ustawiony na niski, gdy urządzenie jest w stanie bezczynności. 
+\item Clock\_Edge - Jeśli prawda, dane są próbkowane na zboczu wznoszącym zegara SPI. Jeśli fałsz, dane są próbkowane na zboczu opadającym zegara SPI.
+\item Clock\_Rate - Częstotliwość zegara SPI w Hz.
+\item SPI\_mod - Magistrala SPI używana do transakcji.
+\end{itemize}
+
+\newpage
+\subsection{Klasa Timer}
+Klasa zdefiniowana w przestrzeni nazw System.Threading.
+\subsubsection{Konstruktor}
+Timer(TimerCallback callback, object state, uint dueTime, uint period)
+\begin{itemize}
+\item callback - nazwa metody która ma być wykonywana.
+\item state - obiekt z informacjami wykorzysytwanych w metodzie callback lub null.
+\item dueTime - opóźnienie z jakim będzie wywoływać się metoda callback, podane w millisekundach.
+\item period - czas między wywołananimy metody callback, podany w millisekundach.
+\end{itemize}
+
+\subsection{Klasa DateTime}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.
+\subsubsection{Atrybuty}
+\begin{itemize}
+\item DateTime.Now.Second - zwraca sekundy z aktualnego czasu. Przyjmuje wartości od 0 do 59.
+\item DateTime.Now.Ticks - zwraca aktualną ilość przeskoków zegara. 
+\end{itemize}
+
+\subsection{Klasa Thread}
+Klasa zdefiniowana w przestrzeni nazw System.Threading.
+\subsubsection{Funkcje}
+void Sleep(int millisecondsTimeout) - uśpienie wątku.
+\begin{itemize}
+\item millisecondsTimeout - czas na jaki ma być uśpiony wątek podany w milisekundach.
+\end{itemize}
 \end{document}
+
