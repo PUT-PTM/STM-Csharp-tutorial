@@ -14,7 +14,7 @@ In instruction.
 
 #Attributions 
 
-https://msdn.microsoft.com/en-us/library/ff361664(v=vs.110).aspx
+https://msdn.microsoft.com/en-us/library/ff361664(v=vs.110).aspx  
 www.singularengineer.com/stm32f4-discovery-board-running-net-microframework/
 
 #License
@@ -23,6 +23,6 @@ GNU GPL v3
 
 #Credits
 
-Wojciech Duda
+Wojciech Duda  
 The project was conducted during the Microprocessor Lab course held by the Institute of Control and Information Engineering, Poznan University of Technology.
 Supervisor: Tomasz Mankowski
