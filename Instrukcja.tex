@@ -1,0 +1,286 @@
+\documentclass{article} 
+\usepackage{graphicx}
+\usepackage{here}
+\usepackage{hyperref}
+\usepackage{polski}
+\usepackage{color}
+\usepackage[utf8]{inputenc}
+\graphicspath{ {C:/image}}
+\title{.NET Micro Framework
+STM32F4 Discovery}
+\date{2016.4.21}
+\author{Wojciech Duda}
+\begin{document} 
+\maketitle 
+\pagenumbering{gobble} 
+\newpage
+\pagenumbering{arabic}
+\tableofcontents
+\newpage
+\section{Teoria}
+Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pamięci jest to architektura harwardzka, tzn. pamięć zawierająca kod programu (Flash) i pamięć danych (SRAM) są rozdzielone i dostęp do nich odbywa się poprzez osobne magistrale.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/1.jpg}
+\caption{Opis urządzenia}
+\end{figure}
+\section{Instalacja}
+\subsection{Narzędzia:}
+\begin{itemize}
+\item mikrokontroler STM32F4 Discovery
+\item kable USB Micro oraz USB Mini
+\item Visual studio
+\item \href{http://www.st.com/content/st_com/en/products/embedded-software/development-tool-software/stsw-link004.html}{STM32 ST-LINK Utility}
+\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471395}{sterwonik USB}
+\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex}
+\item \href {netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK}
+\end{itemize}
+\subsection{Konfiguracja}
+\begin{enumerate}
+\item Zainstaluj STLINK, oraz SDK, resztę plików rozpakuj.
+\item Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na zdjęciu powyżej.)
+\item Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/2.jpg}
+\caption{STLINK Utility}
+\end{figure}
+
+\item Następnie wybierz Target \textgreater Erase Chip oraz Target\textgreater Erase Sectors, wybierz wszystkie i potwierdź. Wybierz Target \textgreater Program…, wybierz ścieżkę Tinybooter.hex a następnie wybierz start. Zresetuj mikrokontroler poprzez przycisk zerujący.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/3.jpg}
+\caption{Programowanie debuggera}
+\end{figure}
+
+\item Jeżeli wszystko przebiegło prawidłowo powinny zapalić się 3 diody użytkowe. Podłącz kabel micro USB (jak na rysunku 4).
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/4.jpg}
+\caption{Podłączony STM32F4 kablami mikro i mini USB}
+\end{figure}
+
+\item Przejdz do “urządzenia i drukarki”. Tam w obszarze“ nieokreślone” kliknij prawym przyciskiem myszy w “STM .Net Test” i wybierz właściowości.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/5.jpg}
+\caption{Urządzenia i drukarki}
+\end{figure}
+
+\item Wejdź w sprzęt \textgreater właściowości \textgreater zmień ustawienia \textgreater sterownik \textgreater Aktualizuj sterownik…
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/6.jpg}
+\caption{Instalacja sterownika krok 1}
+\end{figure}
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/7.jpg}
+\caption{Instalacja sterownika krok 2}
+\end{figure}
+
+\item Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowalłeś na początku sterownik. Podczas instalacji ignoruj ostrzeżenia.
+\item Uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch plików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/8.jpg}
+\caption{MF Deploy}
+\end{figure}
+\item Włącz Visual studio utwórz nowy projekt i wybierz C\# \textgreater Micro Framework \textgreater Console Application.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/9.jpg}
+\caption{Tworzenie projektu}
+\end{figure}
+\item W utworzonym projekie, w Solution Explorer kliknij prawym przyciskiem myszy na projekt i wybierz “Properties”. Tam wybierz .NET Micro Framework i Transport ustaw na USB.
+
+\begin{figure}[H]
+\includegraphics[width=\textwidth]{image/10.jpg}
+\caption{Konfigurowanie Visual Studio}
+\end{figure}
+\end{enumerate}
+
+\section{Przycisk}
+\subsection{Klasa InterruptPort}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+ InterruptPort (Pin \textcolor{red}{portId}, bool \textcolor{red}{glitchFilter}, ResistorMode \textcolor{red}{resistor},\newline InterruptMode \textcolor{red}{interrupt})
+\begin{itemize}
+\item \textcolor{red}{portId} - identyfikator portu.
+\item \textcolor{red}{glitchFilter}, - obsługa filtra błędów: true -włączony, false-wyłączony
+\item \textcolor{red}{resistor} - tryb rezystora, który określa stan domyślny dla portu.
+\item \textcolor{red}{interrupt} - tryb przerwania, który określa warunki wymagane do\newline generowania przerwania.
+\end{itemize}
+\subsubsection{Funkcje}
+bool Read () - zwraca aktualną wartość portu.
+
+\subsection{Deklaracja}
+InterruptPort button = 
+new InterruptPort(\space \textcolor{red}{ (Cpu.Pin)0}, \space \textcolor{red}{ false},\space \textcolor{red}{ Port.ResistorMode.PullDown}, \space \textcolor{red}{ Port.InterruptMode.InterruptEdgeLevelHigh});
+\begin{itemize}
+\item \textcolor{red}{(Cpu.Pin)0} - Przycisk znajduję się na zerowym pinie portu A, każdy port ma 16 pinów. Port A jest pierwszym portem, więc 16*0+0=0.
+\item \textcolor{red}{false} - wyłączona obsługa filtru błędów
+\item \textcolor{red}{Port.ResistorMode.PullDown} - tryb pracy rezystora ustwaioy na pulldown
+\item \textcolor{red}{Port.InterruptMode.InterruptEdgeLevelHigh} - włącza przerwanie kiedy wartość portu jest wysoka.
+\end{itemize}
+
+\section{LED}
+\subsection{Klasa OutputPort}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+ OutputPort (Pin \textcolor{red}{portId},bool \textcolor{red}{initialState})
+\begin{itemize}
+\item \textcolor{red}{portId} - identyfikator portu.
+\item \textcolor{red}{initialState} - stan początkowy na porcie po aktywacji.
+\end{itemize}
+\subsubsection{Funkcje}
+void Write(bool \textcolor{red}{state}) - wpisuje wartość do portu.
+\begin{itemize}
+\item \textcolor{red}{state} - wartość wpisywana do portu.
+\end{itemize}
+\subsection{Deklaracja}
+OutputPort led = new OutputPort(\space \textcolor{red}{(Cpu.Pin)x},\space \textcolor{red}{ false})
+\begin{itemize}
+\item \textcolor{red}{(Cpu.Pin)x} - x- przyjmuje wartości od 60-63 diody znajdują się na \newline końcowych pinach portu D, każdy port ma 16 pinów, więc 16*3+12=60 oraz 16*3+15=63.
+\item \textcolor{red}{false} - stan początkowy diod - wyłączony
+\end{itemize}
+
+\section{PWM}
+\subsection{Klasa PWM}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware.PWM
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+PWM (PWMChannel \textcolor{red}{channel}, Double \textcolor{red}{frequency\_Hz}, Double \textcolor{red}{dutyCycle},  \textcolor{red}{bool invert})
+\begin{itemize}
+\item \textcolor{red}{channel} - kanał PWM
+\item \textcolor{red}{frequency\_Hz} - Częstotliwość impulsów w Hz.
+\item \textcolor{red}{dutyCycle} - Cykl pracy impulsów jako ułamek jedności.
+\item \textcolor{red}{invert} - Wartość, która wskazuje, czy wyjście jest odwrócone.
+\end{itemize}
+\subsubsection{Atrybuty}
+double DutyCycle - Pobiera lub ustawia cykl pracy impulsu jako wartość od 0.0 do 1.0.
+\subsubsection{Funkcje}
+void Start () - Uruchamia port PWM na nieokreślony czas.
+\subsection{Deklaracja}
+ var led = new PWM(\space \textcolor{red}{ Cpu.PWMChannel.PWM\_x },\space \textcolor{red}{ 300},\space \textcolor{red}{ 0}, \space \textcolor{red}{ false});
+\begin{itemize}
+\item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x- przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3.
+\item \textcolor{red}{300} - Za niska częstotliwość moża spowodować że jasność diod może nie zdążyć się zmienić.
+\item \textcolor{red}{0} - przyjmuje 100\% czasu cyklu pracy.
+\item \textcolor{red}{false} - wyjście ustawione jako nie odwrócone.
+\end{itemize}
+
+\newpage
+\section{Zegar czasu rzeczywistego}
+\subsection{Klasa DateTime} 
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.
+\subsubsection{Atrybuty}
+\begin{itemize}
+\item DateTime.Now.Second - zwraca sekundy z aktualnego czasu. Przyjmuje wartości od 0 do 59.
+\item DateTime.Now.Ticks - zwraca aktualną ilość przeskoków zegara. 
+\end{itemize}
+
+\section{SPI-Akcelerometr}
+\subsection{Klasa SPI}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+SPI (\textcolor{red}{Config})
+\begin{itemize}
+\item \textcolor{red}{Config} - Konfiguracja interfejsu SPI
+\end{itemize}
+\subsubsection{Funkcje}
+-void Write (byte[] \textcolor{red}{writeBuffer}) - wpisuje block danych do interfejsu.
+\begin{itemize}
+\item \textcolor{red}{writeBuffer} - buffor który zostanie zapisany do interfejsu.
+\end{itemize}
+-void WriteRead ( byte[] \textcolor{red}{writeBuffer},ref byte[] \textcolor{red}{readBuffer})
+\begin{itemize}
+\item \textcolor{red}{writeBuffer} - buffor który zostanie zapisany do interfejsu.
+\item \textcolor{red}{readBuffer} - buffor do którego zostaną zapisane dane odczytane z \newline interfejsu.
+\end{itemize}
+
+\newpage
+\subsection{Klasa SPI.Configuration}
+Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
+\subsubsection{Referencje}
+\begin{itemize}
+\item Microsoft.SPOT.Hardware
+\end{itemize}
+\subsubsection{Konstruktor}
+SPI.Configuration (Pin \textcolor{red}{ChipSelect\_Port}, bool \textcolor{red}{ChipSelect\_ActiveState}, \newline UInt16 \textcolor{red}{ChipSelect\_SetupTime}, UInt16 \textcolor{red}{ChipSelect\_HoldTime},  bool \textcolor{red}{Clock\_IdleState}, bool \textcolor{red}{Clock\_Edge}, UInt16 \textcolor{red}{Clock\_Rate}, SPI\_module \textcolor{red}{SPI\_mod})
+\begin{itemize}
+\item \textcolor{red}{ChipSelect\_Port} - Port wybranego czipu.
+\item \textcolor{red}{ChipSelect\_ActiveState} - Stan aktywny dla portu wybranego czipu. Jeżeli prawda port będzie ustawiany na wysoki w momencie dostępu do czipu, jezeli fałsz port będzie ustawiany na niski w momencie dostępu do czipu.
+\item \textcolor{red}{ChipSelect\_SetupTime} - Czas pomiędzy wybraniem urządzenia a momentem kiedy zegar rozpocznie transakcje. 
+\item \textcolor{red}{ChipSelect\_HoldTime} - Określa jak długo port czipu musi zostać w stanie aktywnym po zakończeniu transakcji czytania lub pisania.
+\item \textcolor{red}{Clock\_IdleState} - Stan bezczynności zegara. Jeśli prawda, sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku. Jeśli fałsz, sygnał zegara SPI zostanie ustawiony na niski, gdy urządzenie jest w stanie bezczynności. 
+\item \textcolor{red}{Clock\_Edge} - Jeśli prawda, dane są próbkowane na zboczu wznoszącym zegara SPI. Jeśli fałsz, dane są próbkowane na zboczu opadającym zegara SPI.
+\item \textcolor{red}{Clock\_Rate} - Częstotliwość zegara SPI w Hz.
+\item \textcolor{red}{SPI\_mod} - Magistrala SPI używana do transakcji.
+\end{itemize}
+\subsection{Deklaracja}
+-SPI.Configuration MyConfig =
+new SPI.Configuration(\space \textcolor{red}{ (Cpu.Pin)67},\space \textcolor{red}{ false},\space \textcolor{red}{ 0}, \space \textcolor{red}{ 0},\space \textcolor{red}{ true},\space \textcolor{red}{ true},\space \textcolor{red}{ 1000},\space \textcolor{red}{ SPI.SPI\_module.SPI1})
+\begin{itemize}
+\item \textcolor{red}{(Cpu.Pin)67} - SPI znajduje się na trzecim pinie portu E, czyli 16*4+3 = 67.
+\item \textcolor{red}{false} - Port będzie ustawiany na niski w momencie dostępu do czipu.
+\item \textcolor{red}{0} - Natychmiastowe rozpoczęcie transakcji w momencie wybrania urządzenia
+\item \textcolor{red}{0} - Brak stanu aktywnościpo zakończeniu transakcji czytania lub pisania.
+\item \textcolor{red}{true} - Sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku.
+\item \textcolor{red}{true} -  Dane są próbkowane na zboczu wznoszącym zegara SPI.
+\item \textcolor{red}{1000} -  Częstotliwość zegara SPI jest równa 1000 Hz
+\item \textcolor{red}{SPI.SPI\_module.SPI1} - Magistrala SPI 1. 
+\end{itemize}
+-WriteRegister(\space \textcolor{red}{0x20},\space \textcolor{red}{0xC7})
+\begin{itemize}
+\item \textcolor{red}{0x20} -  W kodzie binarnym jest równe 0010 0000, pierwsze 00 oznacza tryb pracy zapisu  a reszta jest adresem rejestru.
+\item \textcolor{red}{0xC7} -  W kodzie binarnym jest równe 11000111, 1100 oznacza szybkość danych wyjściowych równe 12.5 Hz, 0 oznacza że rejestr nie będzie się zmieniał dopóki nie przeczyta MSB oraz LSB, 111 oznacza włączenie X,Y.Z.
+\end{itemize}
+-(ReadRegister(\textcolor{red}{0x2D})
+\begin{itemize}
+\item \textcolor{red}{0x2D } - Rejestr z wartością X.
+\end{itemize}
+-(ReadRegister(\textcolor{red}{0x29})
+\begin{itemize}
+\item \textcolor{red}{ 0x29 } - Rejestr z wartością z.
+\end{itemize}
+-(ReadRegister(\textcolor{red}{0x2B})
+\begin{itemize}
+\item \textcolor{red}{ 0x2B } - Rejestr z wartością Y.
+\end{itemize}
+\subsection{Timer}
+\subsection{Klasa Timer}
+Klasa zdefiniowana w przestrzeni nazw System.Threading.
+\subsubsection{Konstruktor}
+Timer(TimerCallback \textcolor{red}{callback}, object \textcolor{red}{state}, uint \textcolor{red}{dueTime}, uint \textcolor{red}{period})
+\begin{itemize}
+\item \textcolor{red}{callback} - nazwa metody, która ma być wykonywana.
+\item \textcolor{red}{state} - obiekt z informacjami wykorzysytwanych w metodzie callback lub null.
+\item \textcolor{red}{dueTime} - opóźnienie z jakim będzie wywoływać się metoda callback, podane w millisekundach.
+\item \textcolor{red}{period} - czas między wywołananimy metody callback, podany w millisekundach.
+\end{itemize}
+\subsection{Deklaracja}
+Timer timer = new System.Threading.Timer(\space \textcolor{red}{ funTimer},\space \textcolor{red}{ null},\space \textcolor{red}{ 0},\space \textcolor{red}{ 1000});
+\begin{itemize}
+\item \textcolor{red}{funTimer} - Metoda, która ma być wykonywana.
+\item \textcolor{red}{null} - Brak obiektu z infromacjami wykorzystywanymi w metodzie FunTimer.
+\item \textcolor{red}{0} - Brak opóźnienia wywołania metody FunTimer.
+\item \textcolor{red}{1000} - Czas co ile będzie wywoływać się metoda Funtimer(1 sekunda)
+\end{itemize}
+\end{document}
+
