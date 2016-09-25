@@ -38,7 +38,7 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \subsection{Konfiguracja}
 \begin{enumerate}
 \item Zainstaluj STLINK, oraz SDK, resztę plików rozpakuj.
-\item Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na zdjęciu powyżej.)
+\item Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na Rysunku 1.)
 \item Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”
 
 \begin{figure}[H]
@@ -78,7 +78,7 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \caption{Instalacja sterownika krok 2}
 \end{figure}
 
-\item Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowalłeś na początku sterownik. Podczas instalacji ignoruj ostrzeżenia.
+\item Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowałeś na początku sterownik. Podczas instalacji ignoruj ostrzeżenia.
 \item Uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch plików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.
 
 \begin{figure}[H]
@@ -176,9 +176,9 @@ void Start () - Uruchamia port PWM na nieokreślony czas.
  var led = new PWM(\space \textcolor{red}{ Cpu.PWMChannel.PWM\_x },\space \textcolor{red}{ 300},\space \textcolor{red}{ 0}, \space \textcolor{red}{ false});
 \begin{itemize}
 \item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x- przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3.
-\item \textcolor{red}{300} - Za niska częstotliwość moża spowodować że jasność diod może nie zdążyć się zmienić.
+\item \textcolor{red}{300} - Za niska częstotliwość może spowodować że jasność diod nie zdążyć się zmienić.
 \item \textcolor{red}{0} - przyjmuje 100\% czasu cyklu pracy.
-\item \textcolor{red}{false} - wyjście ustawione jako nie odwrócone.
+\item \textcolor{red}{false} - wyjście ustawione jako nieodwrócone.
 \end{itemize}
 
 \newpage
@@ -204,13 +204,13 @@ SPI (\textcolor{red}{Config})
 \item \textcolor{red}{Config} - Konfiguracja interfejsu SPI
 \end{itemize}
 \subsubsection{Funkcje}
--void Write (byte[] \textcolor{red}{writeBuffer}) - wpisuje block danych do interfejsu.
+-void Write (byte[] \textcolor{red}{writeBuffer}) - wpisuje blok danych do interfejsu.
 \begin{itemize}
-\item \textcolor{red}{writeBuffer} - buffor który zostanie zapisany do interfejsu.
+\item \textcolor{red}{writeBuffer} - buffor, który zostanie zapisany do interfejsu.
 \end{itemize}
 -void WriteRead ( byte[] \textcolor{red}{writeBuffer},ref byte[] \textcolor{red}{readBuffer})
 \begin{itemize}
-\item \textcolor{red}{writeBuffer} - buffor który zostanie zapisany do interfejsu.
+\item \textcolor{red}{writeBuffer} - buffor, który zostanie zapisany do interfejsu.
 \item \textcolor{red}{readBuffer} - buffor do którego zostaną zapisane dane odczytane z \newline interfejsu.
 \end{itemize}
 
@@ -225,11 +225,11 @@ Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
 SPI.Configuration (Pin \textcolor{red}{ChipSelect\_Port}, bool \textcolor{red}{ChipSelect\_ActiveState}, \newline UInt16 \textcolor{red}{ChipSelect\_SetupTime}, UInt16 \textcolor{red}{ChipSelect\_HoldTime},  bool \textcolor{red}{Clock\_IdleState}, bool \textcolor{red}{Clock\_Edge}, UInt16 \textcolor{red}{Clock\_Rate}, SPI\_module \textcolor{red}{SPI\_mod})
 \begin{itemize}
 \item \textcolor{red}{ChipSelect\_Port} - Port wybranego czipu.
-\item \textcolor{red}{ChipSelect\_ActiveState} - Stan aktywny dla portu wybranego czipu. Jeżeli prawda port będzie ustawiany na wysoki w momencie dostępu do czipu, jezeli fałsz port będzie ustawiany na niski w momencie dostępu do czipu.
+\item \textcolor{red}{ChipSelect\_ActiveState} - Stan aktywny dla portu wybranego czipu. Jeżeli prawda- port będzie ustawiany na wysoki w momencie dostępu do czipu, jezeli fałsz- port będzie ustawiany na niski w momencie dostępu do czipu.
 \item \textcolor{red}{ChipSelect\_SetupTime} - Czas pomiędzy wybraniem urządzenia a momentem kiedy zegar rozpocznie transakcje. 
-\item \textcolor{red}{ChipSelect\_HoldTime} - Określa jak długo port czipu musi zostać w stanie aktywnym po zakończeniu transakcji czytania lub pisania.
-\item \textcolor{red}{Clock\_IdleState} - Stan bezczynności zegara. Jeśli prawda, sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku. Jeśli fałsz, sygnał zegara SPI zostanie ustawiony na niski, gdy urządzenie jest w stanie bezczynności. 
-\item \textcolor{red}{Clock\_Edge} - Jeśli prawda, dane są próbkowane na zboczu wznoszącym zegara SPI. Jeśli fałsz, dane są próbkowane na zboczu opadającym zegara SPI.
+\item \textcolor{red}{ChipSelect\_HoldTime} - Określa, jak długo port czipu musi zostać w stanie aktywnym po zakończeniu transakcji czytania lub pisania.
+\item \textcolor{red}{Clock\_IdleState} - Stan bezczynności zegara. Jeśli prawda- sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku. Jeśli fałsz- sygnał zegara SPI zostanie ustawiony na niski, gdy urządzenie jest w stanie bezczynności. 
+\item \textcolor{red}{Clock\_Edge} - Jeśli prawda- dane są próbkowane na zboczu wznoszącym zegara SPI. Jeśli fałsz- dane są próbkowane na zboczu opadającym zegara SPI.
 \item \textcolor{red}{Clock\_Rate} - Częstotliwość zegara SPI w Hz.
 \item \textcolor{red}{SPI\_mod} - Magistrala SPI używana do transakcji.
 \end{itemize}
@@ -240,7 +240,7 @@ new SPI.Configuration(\space \textcolor{red}{ (Cpu.Pin)67},\space \textcolor{red
 \item \textcolor{red}{(Cpu.Pin)67} - SPI znajduje się na trzecim pinie portu E, czyli 16*4+3 = 67.
 \item \textcolor{red}{false} - Port będzie ustawiany na niski w momencie dostępu do czipu.
 \item \textcolor{red}{0} - Natychmiastowe rozpoczęcie transakcji w momencie wybrania urządzenia
-\item \textcolor{red}{0} - Brak stanu aktywnościpo zakończeniu transakcji czytania lub pisania.
+\item \textcolor{red}{0} - Brak stanu aktywności po zakończeniu transakcji czytania lub pisania.
 \item \textcolor{red}{true} - Sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku.
 \item \textcolor{red}{true} -  Dane są próbkowane na zboczu wznoszącym zegara SPI.
 \item \textcolor{red}{1000} -  Częstotliwość zegara SPI jest równa 1000 Hz
@@ -248,8 +248,8 @@ new SPI.Configuration(\space \textcolor{red}{ (Cpu.Pin)67},\space \textcolor{red
 \end{itemize}
 -WriteRegister(\space \textcolor{red}{0x20},\space \textcolor{red}{0xC7})
 \begin{itemize}
-\item \textcolor{red}{0x20} -  W kodzie binarnym jest równe 0010 0000, pierwsze 00 oznacza tryb pracy zapisu  a reszta jest adresem rejestru.
-\item \textcolor{red}{0xC7} -  W kodzie binarnym jest równe 11000111, 1100 oznacza szybkość danych wyjściowych równe 12.5 Hz, 0 oznacza że rejestr nie będzie się zmieniał dopóki nie przeczyta MSB oraz LSB, 111 oznacza włączenie X,Y.Z.
+\item \textcolor{red}{0x20} -  W kodzie binarnym jest równe 0010 0000, pierwsze 00 oznacza tryb pracy zapisu, a reszta jest adresem rejestru.
+\item \textcolor{red}{0xC7} -  W kodzie binarnym jest równe 11000111, 1100 oznacza szybkość danych wyjściowych równe 12.5 Hz, 0 oznacza, że rejestr nie będzie się zmieniał dopóki nie przeczyta MSB oraz LSB, 111 oznacza włączenie X,Y.Z.
 \end{itemize}
 -(ReadRegister(\textcolor{red}{0x2D})
 \begin{itemize}
@@ -271,7 +271,7 @@ Timer(TimerCallback \textcolor{red}{callback}, object \textcolor{red}{state}, ui
 \begin{itemize}
 \item \textcolor{red}{callback} - nazwa metody, która ma być wykonywana.
 \item \textcolor{red}{state} - obiekt z informacjami wykorzysytwanych w metodzie callback lub null.
-\item \textcolor{red}{dueTime} - opóźnienie z jakim będzie wywoływać się metoda callback, podane w millisekundach.
+\item \textcolor{red}{dueTime} - opóźnienie, z jakim będzie wywoływać się metoda callback, podane w millisekundach.
 \item \textcolor{red}{period} - czas między wywołananimy metody callback, podany w millisekundach.
 \end{itemize}
 \subsection{Deklaracja}
