@@ -30,14 +30,15 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \item mikrokontroler STM32F4 Discovery
 \item kable USB Micro oraz USB Mini
 \item Visual studio
-\item \href{http://www.st.com/content/st_com/en/products/embedded-software/development-tool-software/stsw-link004.html}{STM32 ST-LINK Utility}
-\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471395}{sterwonik USB}
-\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex}
-\item \href {netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK}
+\item \href{http://www.st.com/content/st_com/en/products/embedded-software/development-tool-software/stsw-link004.html}{STM32 ST-LINK Utility (kliknij aby pobrać)}
+\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471395}{sterwonik USB (kliknij aby pobrać)}
+\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex (kliknij aby pobrać)}
+\item \href {netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK (kliknij aby pobrać)}
 \end{itemize}
 \subsection{Konfiguracja}
 \begin{enumerate}
-\item Zainstaluj STLINK, oraz SDK, resztę plików rozpakuj.
+\item Pobierz pliki z punktu 2.1.
+\item Zainstaluj STM32 ST-LINK Utility, oraz SDK, resztę plików rozpakuj.
 \item Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na Rysunku 1.)
 \item Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”
 
@@ -123,7 +124,7 @@ new InterruptPort(\space \textcolor{red}{ (Cpu.Pin)0}, \space \textcolor{red}{ f
 \begin{itemize}
 \item \textcolor{red}{(Cpu.Pin)0} - Przycisk znajduję się na zerowym pinie portu A, każdy port ma 16 pinów. Port A jest pierwszym portem, więc 16*0+0=0.
 \item \textcolor{red}{false} - wyłączona obsługa filtru błędów
-\item \textcolor{red}{Port.ResistorMode.PullDown} - tryb pracy rezystora ustwaioy na pulldown
+\item \textcolor{red}{Port.ResistorMode.PullDown} - rezystor ustwaioy na pulldown (Kiedy przycisk nie jest aktywny, zwracana jest wartość logiczna 0)
 \item \textcolor{red}{Port.InterruptMode.InterruptEdgeLevelHigh} - włącza przerwanie kiedy wartość portu jest wysoka.
 \end{itemize}
 
@@ -165,7 +166,7 @@ PWM (PWMChannel \textcolor{red}{channel}, Double \textcolor{red}{frequency\_Hz},
 \begin{itemize}
 \item \textcolor{red}{channel} - kanał PWM
 \item \textcolor{red}{frequency\_Hz} - Częstotliwość impulsów w Hz.
-\item \textcolor{red}{dutyCycle} - Cykl pracy impulsów jako ułamek jedności.
+\item \textcolor{red}{dutyCycle} - Określa ile całkowitego czasu jest przeznaczonego na prace jako wartość od 0.0 do 1.0(0-100\%).
 \item \textcolor{red}{invert} - Wartość, która wskazuje, czy wyjście jest odwrócone.
 \end{itemize}
 \subsubsection{Atrybuty}
@@ -177,7 +178,7 @@ void Start () - Uruchamia port PWM na nieokreślony czas.
 \begin{itemize}
 \item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x- przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3.
 \item \textcolor{red}{300} - Za niska częstotliwość może spowodować że jasność diod nie zdążyć się zmienić.
-\item \textcolor{red}{0} - przyjmuje 100\% czasu cyklu pracy.
+\item \textcolor{red}{0} - przyjmuje 0\% czasu cyklu pracy.
 \item \textcolor{red}{false} - wyjście ustawione jako nieodwrócone.
 \end{itemize}
 
@@ -249,15 +250,20 @@ new SPI.Configuration(\space \textcolor{red}{ (Cpu.Pin)67},\space \textcolor{red
 -WriteRegister(\space \textcolor{red}{0x20},\space \textcolor{red}{0xC7})
 \begin{itemize}
 \item \textcolor{red}{0x20} -  W kodzie binarnym jest równe 0010 0000, pierwsze 00 oznacza tryb pracy zapisu, a reszta jest adresem rejestru.
-\item \textcolor{red}{0xC7} -  W kodzie binarnym jest równe 11000111, 1100 oznacza szybkość danych wyjściowych równe 12.5 Hz, 0 oznacza, że rejestr nie będzie się zmieniał dopóki nie przeczyta MSB oraz LSB, 111 oznacza włączenie X,Y.Z.
+\item \textcolor{red}{0xC7} -  W kodzie binarnym jest równe 11000111: 
+\newline 1 - szybkość danych wyjściowych 400Hz(zero oznacza -100Hz)
+\newline 1 - ustawienie urządzenia w trybie aktywnym
+\newline 0 - wartości muszą być zero aby określone były zakresy X,Y,Z.
+\newline 00 - normlany tryb.
+\newline 111 - oznacza włączenie kolejno Z,Y,X.
 \end{itemize}
 -(ReadRegister(\textcolor{red}{0x2D})
 \begin{itemize}
-\item \textcolor{red}{0x2D } - Rejestr z wartością X.
+\item \textcolor{red}{0x2D } - Rejestr z wartością Z.
 \end{itemize}
 -(ReadRegister(\textcolor{red}{0x29})
 \begin{itemize}
-\item \textcolor{red}{ 0x29 } - Rejestr z wartością z.
+\item \textcolor{red}{ 0x29 } - Rejestr z wartością X.
 \end{itemize}
 -(ReadRegister(\textcolor{red}{0x2B})
 \begin{itemize}
