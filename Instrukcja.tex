@@ -5,6 +5,11 @@
 \usepackage{polski}
 \usepackage{color}
 \usepackage[utf8]{inputenc}
+
+\usepackage{titlesec}
+\titlespacing*{\section}
+{0pt}{5.5ex plus 1ex minus .2ex}{4.3ex plus .2ex}
+
 \graphicspath{ {C:/image}}
 \title{.NET Micro Framework
 STM32F4 Discovery}
@@ -61,7 +66,7 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \caption{Podłączony STM32F4 kablami mikro i mini USB}
 \end{figure}
 
-\item Przejdz do “urządzenia i drukarki”. Tam w obszarze“ nieokreślone” kliknij prawym przyciskiem myszy w “STM .Net Test” i wybierz właściowości.
+\item Przejdź do “urządzenia i drukarki”. Tam w obszarze“ nieokreślone” kliknij prawym przyciskiem myszy w “STM .Net Test” i wybierz właściowości.
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{image/5.jpg}
@@ -80,7 +85,7 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \end{figure}
 
 \item Wybierz “Przeglądaj mój komputer w poszukiwaniu oprogramowania sterownika” i wybierz ścieżkę gdzie rozpakowałeś na początku sterownik. Podczas instalacji ignoruj ostrzeżenia.
-\item Uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwoch plików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.
+\item Uruchom MFDeploy. Wybierz Device: USB. Naduś przycisk Ping. Następnie drugie od góry Browse... , wybierz ścieżkę pozostałych dwóch plików hex: ER\_CONFIG.hex, ER\_FLASH.hex oraz wybierz Deploy.
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{image/8.jpg}
@@ -118,16 +123,30 @@ Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
 \subsubsection{Funkcje}
 bool Read () - zwraca aktualną wartość portu.
 
-\subsection{Deklaracja}
+\subsection{Program}
+
+Aby napisać program z użyciem przycisku trzeba najpierw utworzyć dla niego obiekt:\newline \newline
 InterruptPort button = 
 new InterruptPort(\space \textcolor{red}{ (Cpu.Pin)0}, \space \textcolor{red}{ false},\space \textcolor{red}{ Port.ResistorMode.PullDown}, \space \textcolor{red}{ Port.InterruptMode.InterruptEdgeLevelHigh});
 \begin{itemize}
 \item \textcolor{red}{(Cpu.Pin)0} - Przycisk znajduję się na zerowym pinie portu A, każdy port ma 16 pinów. Port A jest pierwszym portem, więc 16*0+0=0.
 \item \textcolor{red}{false} - wyłączona obsługa filtru błędów
-\item \textcolor{red}{Port.ResistorMode.PullDown} - rezystor ustwaioy na pulldown (Kiedy przycisk nie jest aktywny, zwracana jest wartość logiczna 0)
+\item \textcolor{red}{Port.ResistorMode.PullDown} - rezystor ustawiony na pulldown (Kiedy przycisk nie jest aktywny, zwracana jest wartość logiczna 0)
 \item \textcolor{red}{Port.InterruptMode.InterruptEdgeLevelHigh} - włącza przerwanie kiedy wartość portu jest wysoka.
 \end{itemize}
-
+Po utworzeniu obiektu dla przycisku można też zdeklarować inne obiekty potrzebne do programu(np. led opisane w punkcie 4). Po tych czynnościach można odczytać wartość portu przycisku(czy przycisk jest wduszony) za pomocą:\newline\\
+\textcolor{red}{while(true)}\\
+ if (\textcolor{red}{button.Read()} == true)\newline
+ \{kod programu(np. włączanie diód) \}\\
+ else\\
+ \{kod programu(np. wyłączenie diód) \}\\
+ 
+ \begin{itemize}
+\item \textcolor{red}{while(true)} - Pętla sterująca, dzięki niej jest ciągle sprawdzana wartość portu przycisku.
+\item \textcolor{red}{button.Read()} - Zwraca aktualną wartość portu przycisku.
+\end{itemize}
+ 
+ 
 \section{LED}
 \subsection{Klasa OutputPort}
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
@@ -146,11 +165,26 @@ void Write(bool \textcolor{red}{state}) - wpisuje wartość do portu.
 \begin{itemize}
 \item \textcolor{red}{state} - wartość wpisywana do portu.
 \end{itemize}
-\subsection{Deklaracja}
+\subsection{Program}
+Aby napisać program z użyciem diod trzeba dla każdej używanej diody stworzyć obiekt:\newline \newline
 OutputPort led = new OutputPort(\space \textcolor{red}{(Cpu.Pin)x},\space \textcolor{red}{ false})
 \begin{itemize}
-\item \textcolor{red}{(Cpu.Pin)x} - x- przyjmuje wartości od 60-63 diody znajdują się na \newline końcowych pinach portu D, każdy port ma 16 pinów, więc 16*3+12=60 oraz 16*3+15=63.
+\item \textcolor{red}{(Cpu.Pin)x} - x- przyjmuje wartości od 60-63 diody znajdują się na \newline końcowych pinach portu D, każdy port ma 16 pinów, więc 16*3+12=60 oraz 16*3+15=63.(niebieska-63, czerwona-62, pomarańczowa-61, zielona-60)
 \item \textcolor{red}{false} - stan początkowy diod - wyłączony
+\end{itemize}
+Po utworzeniu obiektów dla diod, można zająć się ich obsługą:
+\\ \textcolor{red}{while(true)}\\
+            \{\\
+                \textcolor{red}{led.Write(true);}\\
+                \textcolor{green}{for (int i = 0; i < 100000; i++) { }}\\
+                \textcolor{red}{led.Write(false);}\\
+                \textcolor{green}{for (int i = 0; i < 100000; i++) { }}\\
+\}\\
+\begin{itemize}
+\item \textcolor{red}{while(true)} - Pętla sterująca, dzięki niej diody będą ciągle zmieniały swój stan.
+\item \textcolor{red}{led.Write(true);} - Włączenie diody.
+\item \textcolor{red}{led.Write(false);} - Wyłączenie diody.
+\item \textcolor{green}{for (int i = 0; i < 100000; i++) { }} - pętle opóźniające, dzięki nim diody wolniej zmieniają stan.
 \end{itemize}
 
 \section{PWM}
@@ -173,16 +207,30 @@ PWM (PWMChannel \textcolor{red}{channel}, Double \textcolor{red}{frequency\_Hz},
 double DutyCycle - Pobiera lub ustawia cykl pracy impulsu jako wartość od 0.0 do 1.0.
 \subsubsection{Funkcje}
 void Start () - Uruchamia port PWM na nieokreślony czas.
-\subsection{Deklaracja}
+\subsection{Program}
+Aby napisać program obsługujący diody za pomocą PWM trzeba dla każdej używanej diody stworzyć obiekt:\newline \newline
  var led = new PWM(\space \textcolor{red}{ Cpu.PWMChannel.PWM\_x },\space \textcolor{red}{ 300},\space \textcolor{red}{ 0}, \space \textcolor{red}{ false});
 \begin{itemize}
-\item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x- przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3.
-\item \textcolor{red}{300} - Za niska częstotliwość może spowodować że jasność diod nie zdążyć się zmienić.
+\item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x- przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3(0-zielona, 1-pomarańczowa, 2-Czerwona, 3-Niebieska).
+\item \textcolor{red}{300} - Za niska częstotliwość może spowodować,] że jasność diod nie zdążyć się zmienić.
 \item \textcolor{red}{0} - przyjmuje 0\% czasu cyklu pracy.
 \item \textcolor{red}{false} - wyjście ustawione jako nieodwrócone.
 \end{itemize}
+Oraz dla każdej trzeba wywołać funkcję Start:\\\\
+led.Start();
+Następnie trzeba zdefiniować kod programu(przykładowe zastosowanie):\\\\
+\textcolor{red}{while (true)}\\
+for (int i = 0; i <= 10; i++)\\
+\{\\
+\textcolor{red}{led.DutyCycle = 1 - ((double)i / 10);}\\ 
+\textcolor{red}{Thread.Sleep(1000);}\\ 
+\}
+\begin{itemize}
+\item \textcolor{red}{while (true)} - Pętla sterująca, dzięki niej diody będą ciągle zmieniały swój stan.
+\item \textcolor{red}{led.DutyCycle = 1 - ((double)i / 10);} - zmiana mocy świecenie diody.
+\item \textcolor{red}{Thread.Sleep(1000);} - uśpienie wątku na sekundę(1000 milisekund). Dzięki czemu diody co sekundę zmeiniają moc świecenia
+\end{itemize}
 
-\newpage
 \section{Zegar czasu rzeczywistego}
 \subsection{Klasa DateTime} 
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.
@@ -190,6 +238,17 @@ Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.
 \begin{itemize}
 \item DateTime.Now.Second - zwraca sekundy z aktualnego czasu. Przyjmuje wartości od 0 do 59.
 \item DateTime.Now.Ticks - zwraca aktualną ilość przeskoków zegara. 
+\end{itemize}
+\subsection{Program}
+Przy samej obsłudze czasu nie trzeba tworzyć obiektów. Przykładowy kod w funkcji main:\\\\
+ \textcolor{red}{while (true)}\\
+            \{\\
+                if (\textcolor{red}{DateTime.Now.Second\% 2==0})\\
+				\{Kod programu\}\\
+	\}
+\begin{itemize}
+\item \textcolor{red}{while (true)} -Pętla sterująca, dzięki niej program się nie zakończy.
+\item \textcolor{red}{DateTime.Now.Second\% 2==0} - Jeżeli sekundy z aktualnego czasu nie są nieparzyste, wykonaj Kod programu.
 \end{itemize}
 
 \section{SPI-Akcelerometr}
@@ -231,11 +290,45 @@ SPI.Configuration (Pin \textcolor{red}{ChipSelect\_Port}, bool \textcolor{red}{C
 \item \textcolor{red}{ChipSelect\_HoldTime} - Określa, jak długo port czipu musi zostać w stanie aktywnym po zakończeniu transakcji czytania lub pisania.
 \item \textcolor{red}{Clock\_IdleState} - Stan bezczynności zegara. Jeśli prawda- sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku. Jeśli fałsz- sygnał zegara SPI zostanie ustawiony na niski, gdy urządzenie jest w stanie bezczynności. 
 \item \textcolor{red}{Clock\_Edge} - Jeśli prawda- dane są próbkowane na zboczu wznoszącym zegara SPI. Jeśli fałsz- dane są próbkowane na zboczu opadającym zegara SPI.
-\item \textcolor{red}{Clock\_Rate} - Częstotliwość zegara SPI w Hz.
+\item \textcolor{red}{Clock\_Rate} - Częstotliwość zegara SPI w kHz.
 \item \textcolor{red}{SPI\_mod} - Magistrala SPI używana do transakcji.
 \end{itemize}
-\subsection{Deklaracja}
--SPI.Configuration MyConfig =
+\newpage
+\subsection{Program}
+W klasie programu trzeba stworzyć obiekt:\\\\
+static SPI MySPI = null;\\\\
+Trzeba zdefiniować jedną metodę:\\\\
+public static void WriteRegister( \textcolor{red}{byte register},  \textcolor{red}{byte data})\\
+\{\\
+\textcolor{red}{byte[] tx\_data = new byte[2];}\\
+tx\_data[0] = (byte)(register | 0x00);\\
+tx\_data[1] = data;                \\   
+\textcolor{red}{MySPI.Write(tx\_data);}\\
+\}\\
+\begin{itemize}
+\item \textcolor{red}{byte register} - Adres rejestru.
+\item \textcolor{red}{byte data} - Wartość rejestru.
+\item \textcolor{red}{byte[] tx\_data = new byte[2];} - Tablica, która będzie wpisana do SPI. W 0 elemencie przechowuje adres rejestru w 1 elemencie przechowuje wartość rejestru.
+\item \textcolor{red}{MySPI.Write(tx\_data);} - wpisuje blok danych do akcelerometru.
+\end{itemize}
+Oraz jedną funkcję, zwracającą wartość z rejestru:\\\\
+public static byte ReadRegister(\textcolor{red}{byte register})\\
+ \{\\
+\textcolor{red}{byte[] tx\_data = new byte[2];}\\
+\textcolor{red}{byte[] rx\_data = new byte[2]};\\
+ tx\_data[0] = (byte)(register | 0x80);\\
+ tx\_data[1] = 0;\\
+ \textcolor{red}{MySPI.WriteRead(tx\_data, rx\_data);}\\
+ return rx\_data[1];   \\                   
+\}
+\begin{itemize}
+\item \textcolor{red}{byte register} - Adres rejestru.
+\item \textcolor{red}{byte[] tx\_data = new byte[2];} - Tablica, która będzie wpisana do SPI. W 0 elemencie przechowuje adres rejestru w 1 elemencie przechowuje wartość rejestru.
+\item \textcolor{red}{byte[] rx\_data = new byte[2]}; - Tablica, która będzie przechowywać wartości odczytane z rejestru.
+\item \textcolor{red}{MySPI.WriteRead(tx\_data, rx\_data);} - wpisuje i odczytuje bloki danych z akcelerometru.
+\end{itemize}
+W funkcji Main trzeba stworzyć obiekt SPI.Configuration:\\\\
+SPI.Configuration MyConfig =
 new SPI.Configuration(\space \textcolor{red}{ (Cpu.Pin)67},\space \textcolor{red}{ false},\space \textcolor{red}{ 0}, \space \textcolor{red}{ 0},\space \textcolor{red}{ true},\space \textcolor{red}{ true},\space \textcolor{red}{ 1000},\space \textcolor{red}{ SPI.SPI\_module.SPI1})
 \begin{itemize}
 \item \textcolor{red}{(Cpu.Pin)67} - SPI znajduje się na trzecim pinie portu E, czyli 16*4+3 = 67.
@@ -244,10 +337,13 @@ new SPI.Configuration(\space \textcolor{red}{ (Cpu.Pin)67},\space \textcolor{red
 \item \textcolor{red}{0} - Brak stanu aktywności po zakończeniu transakcji czytania lub pisania.
 \item \textcolor{red}{true} - Sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku.
 \item \textcolor{red}{true} -  Dane są próbkowane na zboczu wznoszącym zegara SPI.
-\item \textcolor{red}{1000} -  Częstotliwość zegara SPI jest równa 1000 Hz
+\item \textcolor{red}{1000} -  Częstotliwość zegara SPI jest równa 1000 kHz
 \item \textcolor{red}{SPI.SPI\_module.SPI1} - Magistrala SPI 1. 
 \end{itemize}
--WriteRegister(\space \textcolor{red}{0x20},\space \textcolor{red}{0xC7})
+Trzeba zdefiniować globalny obiekt MySPI:\\\\
+MySPI = new SPI(MyConfig);\\\\
+Uaktywnić akcelerometr:\\\\
+WriteRegister(\space \textcolor{red}{0x20},\space \textcolor{red}{0xC7})
 \begin{itemize}
 \item \textcolor{red}{0x20} -  W kodzie binarnym jest równe 0010 0000, pierwsze 00 oznacza tryb pracy zapisu, a reszta jest adresem rejestru.
 \item \textcolor{red}{0xC7} -  W kodzie binarnym jest równe 11000111: 
@@ -257,19 +353,14 @@ new SPI.Configuration(\space \textcolor{red}{ (Cpu.Pin)67},\space \textcolor{red
 \newline 00 - normlany tryb.
 \newline 111 - oznacza włączenie kolejno Z,Y,X.
 \end{itemize}
--(ReadRegister(\textcolor{red}{0x2D})
+Aby odczytytać wartości akcelerometru, trzeba posłużyć się funckją \\ReadRegister(\textcolor{red}{X}), gdzie X może przyjąć jedną z wartości:
 \begin{itemize}
 \item \textcolor{red}{0x2D } - Rejestr z wartością Z.
-\end{itemize}
--(ReadRegister(\textcolor{red}{0x29})
-\begin{itemize}
 \item \textcolor{red}{ 0x29 } - Rejestr z wartością X.
-\end{itemize}
--(ReadRegister(\textcolor{red}{0x2B})
-\begin{itemize}
 \item \textcolor{red}{ 0x2B } - Rejestr z wartością Y.
 \end{itemize}
-\subsection{Timer}
+
+\section{Timer}
 \subsection{Klasa Timer}
 Klasa zdefiniowana w przestrzeni nazw System.Threading.
 \subsubsection{Konstruktor}
@@ -280,13 +371,23 @@ Timer(TimerCallback \textcolor{red}{callback}, object \textcolor{red}{state}, ui
 \item \textcolor{red}{dueTime} - opóźnienie, z jakim będzie wywoływać się metoda callback, podane w millisekundach.
 \item \textcolor{red}{period} - czas między wywołananimy metody callback, podany w millisekundach.
 \end{itemize}
-\subsection{Deklaracja}
+\subsection{Program}
+Aby uzyskać timer trzeba zdeklarować specjalną metodę, która będzie wywoływana:\\\\
+ public static void  \textcolor{red}{nazwa}(\textcolor{red}{object state})
+\{
+Kod programu
+\}
+\begin{itemize}
+\item \textcolor{red}{nazwa} - zdefiniowana przez programiste nazwa wywowywanej metody przez Timer.
+\item \textcolor{red}{object state} - dodatkowy obiekt z infromacjami wykorzystywanymi w metodzie.
+\end{itemize}
+Pozostało utworzyć obiekt timer:\\\\
 Timer timer = new System.Threading.Timer(\space \textcolor{red}{ funTimer},\space \textcolor{red}{ null},\space \textcolor{red}{ 0},\space \textcolor{red}{ 1000});
 \begin{itemize}
 \item \textcolor{red}{funTimer} - Metoda, która ma być wykonywana.
 \item \textcolor{red}{null} - Brak obiektu z infromacjami wykorzystywanymi w metodzie FunTimer.
 \item \textcolor{red}{0} - Brak opóźnienia wywołania metody FunTimer.
-\item \textcolor{red}{1000} - Czas co ile będzie wywoływać się metoda Funtimer(1 sekunda)
+\item \textcolor{red}{1000} - Czas, co ile będzie wywoływać się metoda Funtimer(1 sekunda)
 \end{itemize}
 \end{document}
 
