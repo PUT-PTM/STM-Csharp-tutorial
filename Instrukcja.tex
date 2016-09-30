@@ -38,9 +38,9 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \item kable USB Micro oraz USB Mini
 \item Visual studio
 \item \href{http://www.st.com/content/st_com/en/products/embedded-software/development-tool-software/stsw-link004.html}{STM32 ST-LINK Utility (kliknij, aby pobrać)}
-\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471395}{sterwonik USB (kliknij, aby pobrać)}
-\item \href{www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex (kliknij, aby pobrać)}
-\item \href {netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK (kliknij, aby pobrać)}
+\item \href{http://www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471395}{sterwonik USB (kliknij, aby pobrać)}
+\item \href{http://www.codeplex.com/Download?ProjectName=netmf4stm32&DownloadId=471396}{bootloader oraz pliki hex (kliknij, aby pobrać)}
+\item \href {http://www.netmf.codeplex.com/releases/view/91594}{.NET MicroFramework SDK (kliknij, aby pobrać)}
 \end{itemize}
 \subsection{Konfiguracja}
 \begin{enumerate}
@@ -126,7 +126,7 @@ InterruptMode interrupt)
 
 \begin{itemize}
 \item \textcolor{red}{portId} - identyfikator portu.
-\item \textcolor{red}{glitchFilter}, - obsługa filtra błędów: true -włączony, false-wyłączony
+\item \textcolor{red}{glitchFilter} - obsługa filtra błędów: true - włączony, false - wyłączony
 \item \textcolor{red}{resistor} - tryb rezystora, który określa stan domyślny dla portu.
 \item \textcolor{red}{interrupt} - tryb przerwania, który określa warunki wymagane do\newline generowania przerwania.
 \end{itemize}
@@ -148,10 +148,10 @@ Port.InterruptMode.InterruptEdgeLevelHigh );
 \item \textcolor{red}{Port.ResistorMode.PullDown} - rezystor ustawiony na pulldown (Kiedy przycisk nie jest aktywny, zwracana jest wartość logiczna 0)
 \item \textcolor{red}{Port.InterruptMode.InterruptEdgeLevelHigh} - włącza przerwanie, kiedy wartość portu jest wysoka.
 \end{itemize}
-Po utworzeniu obiektu dla przycisku można też zdeklarować inne obiekty potrzebne do programu(np. led opisane w punkcie 4). Po tych czynnościach można odczytać wartość portu przycisku (czy przycisk jest wduszony) za pomocą:
+Po utworzeniu obiektu dla przycisku można też zdeklarować inne obiekty potrzebne do programu (np. led opisane w punkcie 4). Po tych czynnościach można odczytać wartość portu przycisku (czy przycisk jest wduszony) za pomocą:
 \begin{lstlisting}[frame=single] 
 while(true)
-  if (button.Read()} == true)
+  if (button.Read() == true)
       {kod programu}
   else
       {kod programu}
@@ -193,7 +193,7 @@ OutputPort led = new OutputPort(
 false)
 \end{lstlisting}
 \begin{itemize}
-\item \textcolor{red}{(Cpu.Pin)x} - x- przyjmuje wartości od 60-63, diody znajdują się na \newline końcowych pinach portu D, każdy port ma 16 pinów, więc 16*3+12=60 oraz 16*3+15=63.(niebieska-63, czerwona-62, pomarańczowa-61, \\zielona-60)
+\item \textcolor{red}{(Cpu.Pin)x} - x - przyjmuje wartości od 60-63, diody znajdują się na \newline końcowych pinach portu D, każdy port ma 16 pinów, więc 16*3+12=60 oraz 16*3+15=63.(niebieska-63, czerwona-62, pomarańczowa-61, \\zielona-60)
 \item \textcolor{red}{false} - stan początkowy diod - wyłączony
 \end{itemize}
 Po utworzeniu obiektów dla diod, można zająć się ich obsługą:
@@ -214,7 +214,7 @@ while(true)
 \end{itemize}
 
 \section{PWM}
-W tym rozdziale opisana jest klasa, dzięki której można obsługiwać diody LED, przy wykorzystaniu PWM oraz krótka instrukcja jak: napisać program zmieniajacy moc świecenie diod LED.
+W tym rozdziale opisana jest klasa, dzięki której można obsługiwać diody LED, przy wykorzystaniu PWM oraz krótka instrukcja jak: napisać program zmieniajacy moc świecenia diod LED.
 \subsection{Klasa PWM}
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
 \subsubsection{Referencje}
@@ -226,7 +226,7 @@ Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
 \begin{lstlisting}[frame=single] 
 PWM (
 PWMChannel channel,
-Doublefrequency_Hz, 
+Double frequency_Hz, 
 Double dutyCycle,  
 bool invert)
 \end{lstlisting}
@@ -250,7 +250,7 @@ Cpu.PWMChannel.PWM_x,
 false);
 \end{lstlisting}
 \begin{itemize}
-\item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x- przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3(0-zielona, 1-pomarańczowa, 2-Czerwona, //3-Niebieska).
+\item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x - przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3 (0-zielona, 1-pomarańczowa, 2-Czerwona, \\ 3-Niebieska).
 \item \textcolor{red}{300} - Częstotliwość ustawiona na 300 Hz. Przy małej częstotliwości zamiast zmieniać się moc świecenie diod, diody będą migać.
 \item \textcolor{red}{0} - przyjmuje 0\% czasu cyklu pracy (cały czas wysyła sygnał 0).
 \item \textcolor{red}{false} - wyjście ustawione jako nieodwrócone.
@@ -271,7 +271,7 @@ while (true)
 \begin{itemize}
 \item \textcolor{red}{while (true)} - Pętla sterująca, dzięki niej diody będą ciągle zmieniały swój stan.
 \item \textcolor{red}{led.DutyCycle = 1 - ((double)i / 10);} - zmiana mocy świecenia diody.
-\item \textcolor{red}{Thread.Sleep(1000);} - uśpienie wątku na sekundę(1000 milisekund). Dzięki czemu diody co sekundę zmeiniają moc świecenia
+\item \textcolor{red}{Thread.Sleep(1000);} - uśpienie wątku na sekundę(1000 milisekund). Dzięki czemu dioda co sekundę zmeinia moc świecenia
 \end{itemize}
 
 \section{Zegar czasu rzeczywistego}
@@ -288,15 +288,15 @@ Przy samej obsłudze czasu nie trzeba tworzyć obiektów. Przykładowy kod w fun
 \begin{lstlisting}[frame=single]
 while (true)
 {
-	if (DateTime.Now.Second% 2==0})
+	if (DateTime.Now.Second% 2==0)
 		{Kod programu}
 }
 \end{lstlisting}
 \begin{itemize}
-\item \textcolor{red}{while (true)} -Pętla sterująca, dzięki niej program się nie zakończy.
-\item \textcolor{red}{DateTime.Now.Second\% 2==0} - Jeżeli sekundy z aktualnego czasu nie są nieparzyste, wykonaj Kod programu.
+\item \textcolor{red}{while (true)} - Pętla sterująca, dzięki niej program się nie zakończy.
+\item \textcolor{red}{DateTime.Now.Second\% 2==0} - Jeżeli sekundy z aktualnego czasu nie są nieparzyste, wykonaj kod programu.
 \end{itemize}
-Aby wyświetlić w debugerze np. aktualną liczbę przeskoków zegara, można się posłużyć funckją:
+Aby wyświetlić w debugerze np. aktualną liczbę przeskoków zegara, można się posłużyć funkcją:
 \begin{lstlisting}[frame=single]
 Debug.Print(DateTime.Now.Ticks);
 \end{lstlisting}
@@ -316,11 +316,11 @@ SPI (Config)
 \item \textcolor{red}{Config} - Konfiguracja interfejsu SPI
 \end{itemize}
 \subsubsection{Funkcje}
--void Write (byte[] \textcolor{red}{writeBuffer}) - wpisuje blok danych do interfejsu.
+-void Write ( byte[] \textcolor{red}{writeBuffer} ) - wpisuje blok danych do interfejsu.
 \begin{itemize}
 \item \textcolor{red}{writeBuffer} - buffor, który zostanie zapisany do interfejsu.
 \end{itemize}
--void WriteRead ( byte[] \textcolor{red}{writeBuffer},ref byte[] \textcolor{red}{readBuffer})
+-void WriteRead ( byte[] \textcolor{red}{writeBuffer}, ref byte[] \textcolor{red}{readBuffer} )
 \begin{itemize}
 \item \textcolor{red}{writeBuffer} - buffor, który zostanie zapisany do interfejsu.
 \item \textcolor{red}{readBuffer} - buffor, do którego zostaną zapisane dane odczytane z \newline interfejsu.
@@ -336,9 +336,9 @@ Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
 \begin{lstlisting}[frame=single]
 SPI.Configuration (
 Pin ChipSelect_Port, 
-boolChipSelect_ActiveState,
+bool ChipSelect_ActiveState,
 UInt16 ChipSelect_SetupTime, 
-UInt16ChipSelect_HoldTime,  
+UInt16 ChipSelect_HoldTime,  
 bool Clock_IdleState, 
 bool Clock_Edge, 
 UInt16 Clock_Rate, 
@@ -346,11 +346,11 @@ SPI_module SPI_mod)
 \end{lstlisting}
 \begin{itemize}
 \item \textcolor{red}{ChipSelect\_Port} - Port wybranego czipu.
-\item \textcolor{red}{ChipSelect\_ActiveState} - Stan aktywny dla portu wybranego czipu. Jeżeli prawda- port będzie ustawiany na wysoki w momencie dostępu do czipu, jezeli fałsz- port będzie ustawiany na niski w momencie dostępu do czipu.
+\item \textcolor{red}{ChipSelect\_ActiveState} - Stan aktywny dla portu wybranego czipu. Jeżeli prawda - port będzie ustawiany na wysoki w momencie dostępu do czipu, jezeli fałsz - port będzie ustawiany na niski w momencie dostępu do czipu.
 \item \textcolor{red}{ChipSelect\_SetupTime} - Czas pomiędzy wybraniem urządzenia, a momentem kiedy zegar rozpocznie transakcje. 
 \item \textcolor{red}{ChipSelect\_HoldTime} - Określa, jak długo port czipu musi zostać w stanie aktywnym po zakończeniu transakcji czytania lub pisania.
-\item \textcolor{red}{Clock\_IdleState} - Stan bezczynności zegara. Jeśli prawda- sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku. Jeśli fałsz- sygnał zegara SPI zostanie ustawiony na niski, gdy urządzenie jest w stanie bezczynności. 
-\item \textcolor{red}{Clock\_Edge} - Jeśli prawda- dane są próbkowane na zboczu wznoszącym zegara SPI. Jeśli fałsz- dane są próbkowane na zboczu opadającym zegara SPI.
+\item \textcolor{red}{Clock\_IdleState} - Stan bezczynności zegara. Jeśli prawda - sygnał zegara SPI zostanie ustawiony na wysoki, gdy urządzenie jest w stanie spoczynku. Jeśli fałsz - sygnał zegara SPI zostanie ustawiony na niski, gdy urządzenie jest w stanie bezczynności. 
+\item \textcolor{red}{Clock\_Edge} - Jeśli prawda - dane są próbkowane na zboczu wznoszącym zegara SPI. Jeśli fałsz - dane są próbkowane na zboczu opadającym zegara SPI.
 \item \textcolor{red}{Clock\_Rate} - Częstotliwość zegara SPI w kHz.
 \item \textcolor{red}{SPI\_mod} - Magistrala SPI używana do transakcji.
 \end{itemize}
@@ -431,7 +431,7 @@ WriteRegister( 0x20, 0xC7 )
 \newline 1 - ustawienie urządzenia w trybie aktywnym
 \newline 0 - wartość musi być ustawiona na zero, aby określone były zakresy X,Y,Z.
 \newline 00 - normlany tryb.
-\newline 111 - oznacza włączenie kolejno Z,Y,X.
+\newline 111 - oznacza włączenie kolejnych osi Z,Y,X.
 \end{itemize}
 Aby odczytytać wartości akcelerometru, trzeba posłużyć się funckją 
 \begin{lstlisting}[frame=single]
@@ -464,7 +464,7 @@ uint period )
 \item \textcolor{red}{callback} - nazwa metody, która ma być wykonywana.
 \item \textcolor{red}{state} - obiekt z informacjami wykorzysytwanych w metodzie callback lub null.
 \item \textcolor{red}{dueTime} - opóźnienie, z jakim będzie wywoływać się metoda callback, podane w millisekundach.
-\item \textcolor{red}{period} - czas między wywołananimy metody callback, podany w millisekundach.
+\item \textcolor{red}{period} - czas między wywołaniami metody callback, podany w millisekundach.
 \end{itemize}
 \subsection{Program}
 Aby uzyskać timer trzeba zdeklarować specjalną metodę, która będzie wywoływana:
@@ -476,7 +476,7 @@ public static void nazwa( object state )
 \item \textcolor{red}{nazwa} - zdefiniowana przez programistę nazwa wywowywanej metody przez Timer.
 \item \textcolor{red}{object state} - dodatkowy obiekt z infromacjami wykorzystywanymi w metodzie.
 \end{itemize}
-Trzeba utworzyć obiekt timer:
+Trzeba utworzyć obiekt timer(np. w funkcji main):
 \begin{lstlisting}[frame=single]
 Timer timer = new System.Threading.Timer(
 nazwa,
@@ -492,7 +492,7 @@ null,
 \end{itemize}
 Na koniec wystarczy stworzyć pętlę niskończoną, aby program się nie zakończył:
 \begin{lstlisting}[frame=single]
-while{true}
+while(true){}
 \end{lstlisting}
 \end{document}
 
