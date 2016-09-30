@@ -45,7 +45,7 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \item Pobierz pliki z punktu 2.1.
 \item Zainstaluj STM32 ST-LINK Utility, oraz SDK, resztę plików rozpakuj.
 \item Podłącz kabel USB Mini (do wejścia oznaczonego jako “Złącze USB” na Rysunku 1.)
-\item Włącz STLINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”
+\item Włącz ST-LINK Utility , a następnie połącz się z stm32f4 poprzez przycisk: “Connect to the = target”
 
 \begin{figure}[H]
 \includegraphics[width=\textwidth]{image/2.jpg}
@@ -106,6 +106,7 @@ Rdzeń CortexM4F wykorzystuje architekturę ARMv7M. Pod względem organizacji pa
 \end{enumerate}
 
 \section{Przycisk}
+W tym rozdziale opisana jest klasa, dzięki której można korzystać z przycisku, oraz krótka instrukcja jak napisać program z użyciem przycisku.
 \subsection{Klasa InterruptPort}
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
 \subsubsection{Referencje}
@@ -148,6 +149,7 @@ Po utworzeniu obiektu dla przycisku można też zdeklarować inne obiekty potrze
  
  
 \section{LED}
+W tym rozdziale opisana jest klasa, dzięki której można obsługiwać diody LED, oraz krótka instrukcja jak napisać program obsługujący włączanie i wyłączanie diod LED.
 \subsection{Klasa OutputPort}
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware.
 \subsubsection{Referencje}
@@ -188,6 +190,7 @@ Po utworzeniu obiektów dla diod, można zająć się ich obsługą:
 \end{itemize}
 
 \section{PWM}
+W tym rozdziale opisana jest klasa, dzięki której można obsługiwać diody LED przy wykorzystaniu PWM, oraz krótka instrukcja jak napisać program zmieniajacy moc świecenie diod LED.
 \subsection{Klasa PWM}
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
 \subsubsection{Referencje}
@@ -200,7 +203,7 @@ PWM (PWMChannel \textcolor{red}{channel}, Double \textcolor{red}{frequency\_Hz},
 \begin{itemize}
 \item \textcolor{red}{channel} - kanał PWM
 \item \textcolor{red}{frequency\_Hz} - Częstotliwość impulsów w Hz.
-\item \textcolor{red}{dutyCycle} - Określa ile całkowitego czasu jest przeznaczonego na prace jako wartość od 0.0 do 1.0(0-100\%).
+\item \textcolor{red}{dutyCycle} - Określa ile całkowitego czasu jest przeznaczonego na prace jako wartość od 0.0 do 1.0(0-100\%). Lub inaczej przez jaki procent czasu pracowania PWM wysyłany jest sygnał wysoki.
 \item \textcolor{red}{invert} - Wartość, która wskazuje, czy wyjście jest odwrócone.
 \end{itemize}
 \subsubsection{Atrybuty}
@@ -212,15 +215,15 @@ Aby napisać program obsługujący diody za pomocą PWM trzeba dla każdej używ
  var led = new PWM(\space \textcolor{red}{ Cpu.PWMChannel.PWM\_x },\space \textcolor{red}{ 300},\space \textcolor{red}{ 0}, \space \textcolor{red}{ false});
 \begin{itemize}
 \item \textcolor{red}{Cpu.PWMChannel.PWM\_x} - x- przyjmuje wartości od 0 do 3. Oznaczając kanały PWM od 0 do 3(0-zielona, 1-pomarańczowa, 2-Czerwona, 3-Niebieska).
-\item \textcolor{red}{300} - Za niska częstotliwość może spowodować,] że jasność diod nie zdążyć się zmienić.
-\item \textcolor{red}{0} - przyjmuje 0\% czasu cyklu pracy.
+\item \textcolor{red}{300} - Częstotliwość ustawiona na 300 Hz. Przy małej częstotliwości zamiast zmieniać się moc świecenie diod, diody będą migać.
+\item \textcolor{red}{0} - przyjmuje 0\% czasu cyklu pracy(cały czas wysyła sygnał 0).
 \item \textcolor{red}{false} - wyjście ustawione jako nieodwrócone.
 \end{itemize}
 Oraz dla każdej trzeba wywołać funkcję Start:\\\\
-led.Start();
+led.Start();\\
 Następnie trzeba zdefiniować kod programu(przykładowe zastosowanie):\\\\
 \textcolor{red}{while (true)}\\
-for (int i = 0; i <= 10; i++)\\
+for (int i = 0; i \textless = 10; i++)\\
 \{\\
 \textcolor{red}{led.DutyCycle = 1 - ((double)i / 10);}\\ 
 \textcolor{red}{Thread.Sleep(1000);}\\ 
@@ -232,6 +235,7 @@ for (int i = 0; i <= 10; i++)\\
 \end{itemize}
 
 \section{Zegar czasu rzeczywistego}
+W tym rozdziale opisana jest klasa, dzięki której można obsługiwać Zegar czasu rzeczywistego, oraz krótka instrukcja jak napisać program oparty na Zegarze.
 \subsection{Klasa DateTime} 
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.
 \subsubsection{Atrybuty}
@@ -250,8 +254,11 @@ Przy samej obsłudze czasu nie trzeba tworzyć obiektów. Przykładowy kod w fun
 \item \textcolor{red}{while (true)} -Pętla sterująca, dzięki niej program się nie zakończy.
 \item \textcolor{red}{DateTime.Now.Second\% 2==0} - Jeżeli sekundy z aktualnego czasu nie są nieparzyste, wykonaj Kod programu.
 \end{itemize}
+Aby wyświetlić w debugerze np. aktualną liczbę przeskoków zegara można się posłużyć funckją:\\\\
+Debug.Print(DateTime.Now.Ticks);
 
 \section{SPI-Akcelerometr}
+W tym rozdziale opisane są klasy, dzięki którym można obsługiwać Akcelerometr przy wykorzystaniu SPI, oraz krótka instrukcja jak napisać program odczytujący wartości akceleromoetru.
 \subsection{Klasa SPI}
 Klasa zdefiniowana w przestrzeni nazw Microsoft.SPOT.Hardware. 
 \subsubsection{Referencje}
@@ -355,12 +362,16 @@ WriteRegister(\space \textcolor{red}{0x20},\space \textcolor{red}{0xC7})
 \end{itemize}
 Aby odczytytać wartości akcelerometru, trzeba posłużyć się funckją \\ReadRegister(\textcolor{red}{X}), gdzie X może przyjąć jedną z wartości:
 \begin{itemize}
-\item \textcolor{red}{0x2D } - Rejestr z wartością Z.
-\item \textcolor{red}{ 0x29 } - Rejestr z wartością X.
-\item \textcolor{red}{ 0x2B } - Rejestr z wartością Y.
+\item \textcolor{red}{0x2D} - Rejestr z wartością Z.
+\item \textcolor{red}{0x29} - Rejestr z wartością X.
+\item \textcolor{red}{0x2B} - Rejestr z wartością Y.
 \end{itemize}
+Żeby wyświetlić wartość w debugerze można się posłużyć funkcją:\\\\
+
+Debug.Print(ReadRegister(X));
 
 \section{Timer}
+W tym rozdziale opisana jest klasa, dzięki której można obsługiwać Timer, oraz krótka instrukcja jak napisać program wykorzystujący Timer.
 \subsection{Klasa Timer}
 Klasa zdefiniowana w przestrzeni nazw System.Threading.
 \subsubsection{Konstruktor}
